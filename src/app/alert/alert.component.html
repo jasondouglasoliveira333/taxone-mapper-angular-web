@@ -1,0 +1,50 @@
+<div class="local-card content">
+	<div>
+		<!--h1>HI FOLKS</h1-->
+		<div class="tltle">Notificações de Status de Processos</div>
+		<div class="bordered">
+			<div style="margin:17px 0 0 28px;">
+				<div class="table-title">Emails</div>
+				<div style="margin: 5px 0 10px 0; width:44%">
+					<table cellspacing="0" style="width: 100%">
+						<thead>
+							<td class="table-header" style="width: 61%">Email</td>
+							<td class="table-header" style="width: 20%">Tipo Notificação</td>
+							<td class="table-header" style="width: 10%"></td>
+						</thead>
+						<tbody>
+							<tr class="t-row">
+								<td class="t-columns">
+									<input type="text" [(ngModel)]="email.email" size="30"/>
+								</td>
+								<td class="t-columns">
+									<select [(ngModel)]="email.type">
+										<option *ngFor="let nf of notificationTypes" value="{{nf}}">{{nf}}</option>
+									</select>
+								</td>
+								<td class="t-columns" style="width: 10px; padding: 1px">
+									<button (click)="onAdd()" style="padding: 1px 6px 1px 6px;">Add</button>
+								</td>
+							</tr>
+							<tr *ngFor="let e of emails" class="t-row">
+								<td class="t-columns">{{e.email}}</td>
+								<td class="t-columns">{{e.type}}</td>
+								<td class="t-columns" style="width: 10px; padding: 1px">
+									<button (click)="onDelete(e.id)" [disabled]="e.id == null" 
+										style="padding: 1px 6px 1px 6px;">Delete</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div style="display:flex; margin-left: 10px; margin-top:5px;">
+						<div style="width:90%"></div>
+						<pagination [pagination]="pagination" [totalPages]="totalPages" (page)="onPage($event)"></pagination>
+					</div>
+				</div>
+			</div>
+			<div style="width: 45%; direction: rtl; margin: 20px 0px 15px 0px">
+				<button (click)="onSave()">Save</button> 
+			</div>
+		</div>
+	</div>
+</div>

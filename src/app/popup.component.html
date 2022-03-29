@@ -1,0 +1,46 @@
+	<div [hidden]="mailConfigPanelVisible == false" style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; background-color: gray; opacity: .7;">
+	</div>
+	<div [hidden]="mailConfigPanelVisible == false" style="position: absolute; left: 0px; top: 0px; left: 40%; top: 100px; background-color: white; width: 20%;">
+		<div style="display: flex; padding: 10px;">
+			<div style="width: 92%; font-weight: 600">POP/IMAP</div>
+			<a (click)="mailConfigPanelVisible = false"><img width="27px" src="{{resourcePath}}/assets/img/close.png"/></a>
+		</div>
+		<div style="margin-left:15px">
+			<div style="font-size: 15px">Host</div>
+			<div style="margin-top: 6px;">
+				<input [(ngModel)]="mailInfo.host" type='text' maxLength="50" size="20" style="font-size: 15px">
+			</div>
+		</div>
+		<div style="margin-left:15px">
+			<div style="font-size: 15px">Port</div>
+			<div style="margin-top: 6px;">
+				<input [(ngModel)]="mailInfo.port" type='text' (keydown)="onPortKeyup($event)" maxLength="5" size="10" style="font-size: 15px">
+			</div>
+		</div>
+		<div style="margin-left:15px">
+			<div style="font-size: 15px">Protocol</div>
+			<div style="margin-top: 6px;">
+				<select [(ngModel)]="mailInfo.protocol" style="font-size: 15px">
+					<option *ngFor="let protocol of protocols" value="{{protocol}}">{{protocol}}</option>
+				</select>
+			</div>
+		</div>
+		<div style="margin-left:15px">
+			<div style="font-size: 15px">Email</div>
+			<div style="margin-top: 6px;">
+				<input [(ngModel)]="mailInfo.username" type='text' maxLength="50" size="20" style="font-size: 15px">
+			</div>
+		</div>
+		<div style="margin-left:15px">
+			<div style="font-size: 15px">Password</div>
+			<div style="margin-top: 6px;">
+				<input [(ngModel)]="mailInfo.password" type='text' maxLength="20" size="20" style="font-size: 15px">
+			</div>
+		</div>
+		<div style="display:flex; padding: 10px">
+			<div style="width: 80%"></div>
+			<button (click)="onSaveMailInfo()">Save</button>
+			<div style="margin-right: 5px;"></div>
+			<button (click)="mailConfigPanelVisible = false">Cancel</button>
+		</div>
+	</div>

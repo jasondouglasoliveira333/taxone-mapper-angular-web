@@ -1,0 +1,117 @@
+<div class="local-card content">
+	<div>
+		<!--h1>HI FOLKS</h1-->
+		<div class="tltle">Datasource</div>
+		<div class="bordered">
+			<!-- JDBC -->
+			<div style="display: flex; margin-top: 15px">
+				<div style="width: 60%">
+					<div style="font-size: 14px; font-weight: 600; margin-left:13px">Detalhes</div>
+					<div [hidden]="dataSourceType != 'Database'" class="mapping-panel">
+						<div class="mapping-field-container" style="margin-top: 18px">
+							<div class="mapping-field">JDBC url</div>
+							<input [(ngModel)]="dataSourceConfig.url" maxlength="100" type="text" size="60">
+						</div>
+						<div class="mapping-field-container">
+							<div class="mapping-field">username</div>
+							<input [(ngModel)]="dataSourceConfig.username" type="text" maxlength="25" size="13">
+						</div>
+						<div class="mapping-field-container">
+							<div class="mapping-field">password</div>
+							<input [(ngModel)]="dataSourceConfig.password" type="text" maxlength="25" size="13">
+						</div>
+						<div class="mapping-field-container">
+							<div class="mapping-field">tabela/view</div>
+							<textarea [(ngModel)]="dataSourceConfig.resourceNames" type="text" maxlength="500" cols="70" rows="10" 
+								style="height: 100px;resize: none;">
+							</textarea>
+						</div>
+						<div style="margin: 10px 10px 0 13px; display: flex; direction: rtl">
+							<button (click)="onGetMetadata()">Get Metadata</button> 
+						</div>
+						<div style="margin-top: 15px;">
+						</div>
+					</div>
+					<div [hidden]="dataSourceType != 'TXT'" class="mapping-panel">
+						<div class="mapping-field-container" style="margin-top: 18px">
+							<div class="mapping-field">Diretório</div>
+							<input [(ngModel)]="dataSourceConfig.url" maxlength="100" type="text" size="60">
+						</div>
+						<div class="mapping-field-container">
+							<div class="mapping-field">Arquivo Exemplo</div>
+							<textarea [(ngModel)]="dataSourceConfig.resourceNames" type="text" maxlength="500" cols="70" rows="10" 
+								style="height: 100px;resize: none;">
+							</textarea>
+						</div>
+						<div style="height: 74px">
+						</div>
+						<div style="margin: 10px 10px 0 13px; display: flex; direction: rtl">
+							<button (click)="onGetMetadata()">Get Metadata</button> 
+						</div>
+						<div style="margin-top: 15px;">
+						</div>
+					</div>
+					<div [hidden]="dataSourceType != 'FTP'" class="mapping-panel">
+						<div class="mapping-field-container" style="margin-top: 18px">
+							<div class="mapping-field">IP/DNS</div>
+							<input [(ngModel)]="dataSourceConfig.url" maxlength="100" type="text" size="60">
+						</div>
+						<div class="mapping-field-container">
+							<div class="mapping-field">Username</div>
+							<input [(ngModel)]="dataSourceConfig.username" maxlength="25" type="text" size="13">
+						</div>
+						<div class="mapping-field-container">
+							<div class="mapping-field">Password</div>
+							<input [(ngModel)]="dataSourceConfig.password" maxlength="25" type="text" size="13">
+						</div>
+						<div class="mapping-field-container">
+							<div class="mapping-field">Arquivo Exemplo</div>
+							<textarea [(ngModel)]="dataSourceConfig.resourceNames" type="text" maxlength="500" cols="70" rows="10" 
+								style="height: 100px;resize: none;" >
+							</textarea>
+						</div>
+						<div style="margin: 10px 10px 0 13px; display: flex; direction: rtl">
+							<button (click)="onGetMetadata()">Get Metadata</button> 
+						</div>
+						<div style="margin-top: 15px;">
+						</div>
+					</div>
+				</div>
+				<div style="width: 37%;">
+					<div style="display: flex;">
+						<div class="table-title" style="padding: 0px 8px 6px 0px;">Campos</div>
+						<select (change)="onDSCnage($event)" style="height: 24px !important; padding: 0px; margin-top: -3px;">
+							<option *ngFor="let dsTable of dsTables"value="{{dsTable.id}}">{{dsTable.name}}</option>
+						</select>
+					</div>
+					<div style="margin: 5px 0 10px 0;">
+						<table cellspacing="0" style="width: 100%">
+							<thead>
+								<td class="table-header" style="width: 35%">Tabela/Arquivo</td>
+								<td class="table-header" style="width: 35%">Coluna</td>
+								<td class="table-header" style="width: 23%">Tipo</td>
+								<td class="table-header">Tamanho</td>
+							</thead>
+							<tbody>
+								<tr *ngFor="let field of dsColumns" class="t-row">
+									<td class="t-columns" style="padding: 3px">{{field.dsTable.name}}</td>
+									<td class="t-columns" style="padding: 3px">{{field.name}}</td>
+									<td class="t-columns">{{field.columnType}}</td>
+									<td class="t-columns">{{field.size}}</td>
+								</tr>
+							</tbody>
+						</table>
+						<div style="display:flex; margin-left: 10px; margin-top:5px;">
+							<div style="width:90%"></div>
+							<pagination [pagination]="pagination" [totalPages]="totalPages" (page)="onPage($event)"></pagination>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div style="width: 60%; direction: rtl; margin-top: 10px">
+				<button (click)="onSave()" >Salvar</button> 
+				<button (click)="onBack()" style="margin-right: 5px">Cancelar</button> 
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,23 @@
+<div class="local-card content" style="width: 33%; margin: 10% 0 0 38%; min-height: 255px">
+	<div style="width: 98%">
+		<div class="tltle">Login</div>
+		<div class="bordered" style="min-height: 202px; margin-left: 8px;">
+			<div style="margin: 25px 0 0 13px; display: flex">
+				<div style="width: 100%">
+					<div style="display: flex; margin: 14px 0 16px 42px;">
+						<div style="font-size: 12px; margin: 3px 13px 0 0; text-align: right; width: 50px;">Usuário</div>
+						<input [(ngModel)]="user.username" type="text" maxlength="25" size="25" style="height: 13px;">
+					</div>
+					<div style="display: flex; margin: 0px 0 16px 42px;">
+						<div style="font-size: 12px; margin: 3px 13px 0 0; text-align: right; width: 50px;">Senha</div>
+						<input [(ngModel)]="user.password" type="password" maxlength="25" size="25" style="height: 13px;">
+					</div>
+					<div style="margin: 27px 30px 0px 30px;">
+						<button style="width:95%" (click)="onLogin()">Login</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>				
+		

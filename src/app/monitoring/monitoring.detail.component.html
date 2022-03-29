@@ -1,0 +1,58 @@
+<div class="local-card content">
+	<div>
+		<div class="tltle">Monitoramento</div>
+		<div class="bordered">
+			<!-- Filtro  -->
+			<div style="width:60%; margin-left: 7px;">
+				<div class="filter-label">Detalhes</div>
+				<div style="display:flex">	
+					<div style="display: flex; margin: 5px 0 0 10px">
+						<div style="font-size: 12px; margin-right: 13px;">Nome</div>
+						<div style="font-size: 13px">{{scheduleLog.scheduleName}}</div>
+					</div>
+					<div style="display: flex; margin: 5px 0 0 63px">
+						<div style="font-size: 12px; margin-right: 13px;">Horário</div>
+						<div style="font-size: 13px">{{scheduleLog.executionDate | date:'yyyy/MM/dd HH:mm:ss'}}</div>
+					</div>
+					<div style="display: flex; margin: 5px 0 0 63px">
+						<div style="font-size: 12px; margin-right: 13px;">Status</div>
+						<div style="font-size: 13px">{{scheduleLog.status}}</div>
+					</div>
+				</div>
+			</div>
+			<div style="margin-top:22px; width:60%">
+				<div class="line-divider"></div>
+			</div>
+			<div style="margin:17px 0 0 13px;">
+				<div class="table-title">Erros TaxONE</div>
+				<div style="margin: 5px 0 10px 0; width:58%">
+					<table cellspacing="0" style="width: 100%">
+						<thead>
+							<td class="table-header" style="width: 14%">N# Registro</td>
+							<td class="table-header" style="width: 14%">Código Erro</td>
+							<td class="table-header" style="width: 48%">Descrição Erro</td>
+							<td class="table-header" style="width: 20%">Nome Campo</td>
+							<td class="table-header" style="width: 11%">Chave</td>
+						</thead>
+						<tbody>
+							<tr *ngFor="let taxOneError of taxOneErrors" class="t-row">
+								<td class="t-columns">{{taxOneError.numeroReg}}</td>
+								<td class="t-columns">{{taxOneError.codigoErro}}</td>
+								<td class="t-columns">{{taxOneError.descricaoErro}}</td>
+								<td class="t-columns">{{taxOneError.nomeCampo}}</td>
+								<td class="t-columns">{{taxOneError.chaveRegistro}}</td>
+							</tr>
+						</tbody>
+					</table>
+					<div style="display:flex; margin-left: 10px; margin-top:5px;">
+						<div style="width:90%"></div>
+						<pagination [pagination]="pagination" [totalPages]="totalPages" (page)="onPage($event)"></pagination>
+					</div>
+				</div>
+			</div>
+			<div style="width: 60%; direction: rtl; margin-top: 10px">
+				<button (click)="onBack()" style="margin-right: 5px">Voltar</button> 
+			</div>
+		</div>
+	</div>
+</div>

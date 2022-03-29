@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'conciliador'`, () => {
+  it(`should have as title 'taxone-mapper-angular-web'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('conciliador');
+    expect(app.title).toEqual('taxone-mapper-angular-web');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('conciliador app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('taxone-mapper-angular-web app is running!');
   });
 });
