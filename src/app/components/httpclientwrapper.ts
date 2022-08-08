@@ -11,14 +11,12 @@ export class HttpClientWrapper {
 	  let token = sessionStorage.getItem("token");
 	  if (token){
 		  header = {'Authorization': 'Bearer ' + sessionStorage.getItem("token")!}
-		  //header = {'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXNvbiIsImV4cCI6MTYzMjI1MjAwMSwiaWF0IjoxNjMyMjM0MDAxfQ.Q-W2Dz-I7Oe0cJAerMNZUbu-LBAM1e-emDK0dgU9SvD2CQibeJ0sUzy1wFwHwP2XiLcGSAPiNsYKauXQ7RGqIA'}
 	  }
 	  return header;
   }
 
   get(url:string) {
     let aHeader = this.createAuthorizationHeader();
-	//alert("sessionStorage.getItem(\"token\"):" + sessionStorage.getItem("token") + " headers:" + JSON.stringify(aHeader));
     return this.http.get(url, {
       headers: aHeader
     });

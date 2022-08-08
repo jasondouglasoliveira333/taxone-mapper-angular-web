@@ -28,7 +28,6 @@ export class AppComponent {
   }
 	
   treatImagePath(url: string){
-	//alert(url);
 	let slashIdx = url.lastIndexOf("/");
 	if  (slashIdx != -1){
 		this.resourcePath = url.substring(0, slashIdx);
@@ -38,7 +37,6 @@ export class AppComponent {
   }
 
   isLogged(){
-	//alert("sessionStorage.getItem(\"token\") != null:" + sessionStorage.getItem("token") != null);
 	  return sessionStorage.getItem("token") != null;
   }
 	
