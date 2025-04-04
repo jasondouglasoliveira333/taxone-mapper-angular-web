@@ -1,0 +1,125 @@
+<div class="local-card content">
+	<div>
+		<!--h1>HI FOLKS</h1-->
+		<div class="tltle">Agendamento</div>
+		<div class="bordered">
+			<div style="display: flex; margin: 30px 0 0 28px;">
+				<div style="font-size: 12px; margin-right: 13px;">Nome</div>
+				<input [(ngModel)]="scheduleConfig.name"  type="text" maxlength="40" size="40">
+			</div>
+			<div style="display:flex">
+				<div style="display: flex; width: 50%">
+					<div style="margin: 32px 0 0 28px; display: flex; width: 35%">
+						<div class="schedule-list-container" >Disponiveis</div>
+						<select multiple [(ngModel)]="selectedAvaiableTables" style="width: 100px; height: 144px !important; padding: 5px;" draggable="true">
+							<option *ngFor="let at of availableTables" value="{{at.id}}">{{at.name}}</option>
+						</select>
+					</div>
+					<div style="padding: 54px 20px 0 20px">
+						<div>
+							<button (click)="onAddSelected()">></button>
+						</div>
+						<div>
+							<button (click)="onAddAvailable()"><</button>
+						</div>
+					</div>
+					<div style="margin-top: 32px; display: flex; width: 35%">
+						<div class="schedule-list-container">Selecionadas</div>
+						<select multiple [(ngModel)]="selectedSelectedTables" style="width: 100px; height: 144px !important; padding: 5px;">
+							<option *ngFor="let st of scheduleConfig.safxTables" value="{{st.id}}">{{st.name}}</option>
+						</select>
+					</div>
+				</div>
+				<div style="display: flex; width: 37%">
+					<div style="margin: 32px 0 0 100px; display: flex; width: 35%">
+						<div class="schedule-list-container">Dias</div>
+						<select [(ngModel)]="selectedDays" multiple style="width: 100px; height: 144px !important; padding: 5px;">
+							<option *ngFor="let v of days" value="{{v.value}}">{{v.label}}</option>
+						</select>
+					</div>
+					<div style="margin: 32px 0 0 28px; display: flex; width: 35%">
+						<div class="schedule-list-container">Horas</div>
+						<select multiple [(ngModel)]="selectedHours" style="width: 100px; height: 144px !important; padding: 5px;">
+							<option *ngFor="let h of hours" [value]="h.value">{{h.label}}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div style="margin:17px 0 0 28px;">
+				<div class="table-title">Critérios</div>
+				<div style="margin: 5px 0 10px 0; width:74%">
+					<table cellspacing="0" style="width: 100%">
+						<thead>
+							<td class="table-header" style="width: 12%">Tabela</td>
+							<td class="table-header" style="width: 21%">Coluna</td>
+							<td class="table-header" style="width: 12%">Operador</td>
+							<td class="table-header" style="width: 45%">Valor</td>
+							<td class="table-header" style="width: 7%"></td>
+						</thead>
+						<tbody>
+							<tr class="t-row">
+								<td class="t-columns">
+									<select [(ngModel)]="criteria.safxColumn.safxTable.id" (change)="onGetColumns()" style="width: 85px">
+										<option *ngFor="let t of scheduleConfig.safxTables" value="{{t.id}}">{{t.name}}</option>
+									</select>
+								</td>
+								<td class="t-columns">
+									<select [(ngModel)]="criteria.safxColumn.id" style="width: 154px">
+										<option *ngFor="let c of safxColumns" value="{{c.id}}">{{c.name}}</option>
+									</select>
+								</td>
+								<td class="t-columns">
+									<select [(ngModel)]="criteria.operator" (change)="onOperatorChange()">
+										<option *ngFor="let o of operators" value="{{o}}">{{o}}</option>
+									</select>
+								</td>
+								<td class="t-columns">
+									<div style="display:flex">
+										<div *ngIf="criteria.operator == '=' || criteria.operator == '!='" style="width:290px">
+											<input type="text" [(ngModel)]="criteria.value" maxlength="40">
+										</div>
+										<div *ngIf="criteria.operator == '<=' || criteria.operator == '>='"  style="width:290px">
+											<input [type]="dateField == true ? 'date' : 'text'" [(ngModel)]="criteria.value" 
+												(keydown)="onDateNumericKeydown($event)" maxlength="40" style="width:120px"/>
+										</div>
+										<div *ngIf="criteria.operator == 'between'" style="display: flex; width:290px">
+											<input [type]="dateField == true ? 'date' : 'text'" [(ngModel)]="criteria.value" 
+												(keydown)="onDateNumericKeydown($event)" maxlength="40" style="width:120px"/>até
+											<input [type]="dateField == true ? 'date' : 'text'" [(ngModel)]="criteria.additionalValue" 
+												(keydown)="onDateNumericKeydown($event)" maxlength="40" style="width:120px"/>
+										</div>
+										<div *ngIf="criteria.operator == '<=' || criteria.operator == '>=' 
+												|| criteria.operator == 'between'">
+											<input type="checkbox" [(ngModel)]="dateField" (click)="onDateCheck()">Date
+										</div>
+									</div>
+								</td>
+								<td class="t-columns" style="width: 10px; padding: 1px">
+									<button (click)="onAdd()" style="padding: 1px 6px 1px 6px;">Add</button>
+								</td>
+							</tr>
+							<tr *ngFor="let c of criteriasOnePage" class="t-row">
+								<td class="t-columns">{{findTableName(c.safxColumn.safxTable.id)}}</td>
+								<td class="t-columns">{{c.safxColumn.name}}</td>
+								<td class="t-columns">{{c.operator}}</td>
+								<td class="t-columns">{{c.additionalValue ? c.value + ' até ' + c.additionalValue : c.value}}</td>
+								<td class="t-columns" style="width: 10px; padding: 1px">
+									<button (click)="onDelete(c)" style="padding: 1px 6px 1px 6px;">Delete</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div style="display:flex; margin-left: 10px; margin-top:5px;">
+						<div style="width:90%"></div>
+						<pagination [pagination]="pagination" [totalPages]="totalPages" (page)="onPage($event)"></pagination>
+					</div>
+				</div>
+			</div>
+			<div style="width: 87%; direction: rtl; margin: 5px 0 12px 0;">
+				<button (click)="onSave()">Salvar</button> 
+				<button (click)="onBack()" style="margin-right:5px">Cancelar</button>
+				<button (click)="onProcess()" style="margin-right:5px">Process</button>
+			</div>
+		</div>
+	</div>
+</div>

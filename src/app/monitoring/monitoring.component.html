@@ -1,0 +1,45 @@
+<div class="local-card content">
+	<div>
+		<!--h1>HI FOLKS</h1-->
+		<div class="tltle">Monitoramento</div>
+		<div class="bordered">
+			<div style="display:flex">
+				<div id="piechart" style="margin: 3px"></div>
+				<div style="margin:17px 0 0 28px; width: 46%;">
+					<div class="table-title">Agendamentos</div>
+					<div style="margin: 5px 0 10px 0;">
+						<table cellspacing="0" style="width: 100%">
+							<thead>
+								<td class="table-header" style="width: 32%">Nome</td>
+								<td class="table-header" style="width: 24%">Horário</td>
+								<td class="table-header" style="width: 30%">Status</td>
+								<td class="table-header" style="width: 14%"></td>
+							</thead>
+							<tbody>
+								<tr *ngFor="let sl of scheduleLogs" class="t-row">
+									<td class="t-columns">{{sl.scheduleName}}</td>
+									<td class="t-columns">{{sl.executionDate | date:'yyyy/MM/dd HH:mm:ss'}}</td>
+									<td class="t-columns" style="width: 10px">{{sl.status}}</td>
+									<td class="t-columns" style="height:16px">
+										<button (click)="onView(sl.id)" [hidden]="sl.status != 'Erro no retorno TaxOne'" 
+											style="padding: 0px 6px 0px 6px;">Detalhes
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div style="display:flex; margin-left: 10px; margin-top:5px;">
+							<div style="width:90%"></div>
+							<pagination [pagination]="pagination" [totalPages]="totalPages" (page)="onPage($event)"></pagination>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button id="processingButton" (click)="onChartFilter('PROCESSING')" class="invisible"></button>
+			<button id="processingErrorButton" (click)="onChartFilter('PROCESSING_ERROR')" class="invisible"></button>
+			<button id="sentButton" (click)="onChartFilter('SENT')" class="invisible"></button>
+			<button id="processedButton" (click)="onChartFilter('PROCESSED')" class="invisible"></button>
+			<button id="errorTaxoneButton" (click)="onChartFilter('ERROR_TAXONE')" class="invisible"></button>
+		</div>
+	</div>
+</div>

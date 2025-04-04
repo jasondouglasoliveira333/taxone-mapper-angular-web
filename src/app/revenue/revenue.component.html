@@ -1,0 +1,130 @@
+<div class="local-card content">
+	<div>
+		<!--h1>HI FOLKS</h1-->
+		<div class="tltle">Inclusão de Receita Orçamentária</div>
+		<div class="bordered">
+			<!-- JDBC -->
+			<div style="margin-top: 15px">
+				<div style="width: 98%;">
+					<div style="font-size: 14px; font-weight: 600; margin-left:13px">Inclusão de Receita Orçamentária</div>
+					<div class="mapping-panel" style="padding-bottom: 10px">
+						<div style="display: flex">
+							<div class="mapping-field-container" style="display: block; width: 33%;">
+								<div class="mapping-field" style="width: 90%;">Código Reduzido</div>
+								<input [(ngModel)]="revenue.reducedCode" maxlength="100" type="text" size="20" style="width: 90%;">
+							</div>
+							<div class="mapping-field-container" style="display: block; width: 33%;">
+								<div class="mapping-field" style="width: 90%;">Grau</div>
+								<input [(ngModel)]="revenue.degree" type="text" maxlength="25" size="13" style="width: 90%;">
+							</div>
+							<div class="mapping-field-container" style="display: block; width: 33%;">
+								<div class="mapping-field" style="width: 90%;">Data de Abertura</div>
+								<input [(ngModel)]="revenue.openingDate" type="text" maxlength="25" size="13" style="width: 90%;">
+							</div>
+						</div>
+						<div style="display: flex">
+							<div class="mapping-field-container" style="display: block; width: 100%;">
+								<div class="mapping-field" style="width: 90%;">Descrição</div>
+								<input [(ngModel)]="revenue.description" maxlength="100" type="text" size="20" style="width: 96.7%;">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div style="width: 98%">
+					<div style="margin-top: 20px; font-size: 14px; font-weight: 600; margin-left:13px">Fontes de Recurso</div>
+					<div class="mapping-panel" style="padding-bottom: 10px">
+						<div style="display: flex">
+							<div class="mapping-field-container" style="display: block; width: 50%;">
+								<div class="mapping-field" style="width: 90%;">Fonte de Recurso</div>
+								<input [(ngModel)]="revenue.resourceSourceCode" maxlength="100" type="text" size="20" style="width: 20%;">
+								<input [(ngModel)]="revenue.resourceSourceDescription" maxlength="100" type="text" size="20" style="width: 70%;">
+							</div>
+							<div class="mapping-field-container" style="display: block; width: 50%;">
+								<div class="mapping-field" style="width: 90%;">Código de Aplicação</div>
+								<input [(ngModel)]="revenue.applicationCode" maxlength="100" type="text" size="20" style="width: 25%;">
+								<a (click)="onSave()" >
+									<img src="{{resourcePath}}/assets/img/lupa.gif">
+								</a> 
+								<a (click)="onSave()" >
+									<img src="{{resourcePath}}/assets/img/borracha.gif">
+								</a> 
+								<input [(ngModel)]="revenue.applicationDescription" maxlength="100" type="text" size="20" style="width: 60%;">
+							</div>
+						</div>
+						<div style="display: flex">
+							<div class="mapping-field-container" style="display: block; width: 50%;">
+								<div class="mapping-field" style="width: 90%;">Percentual</div>
+								<input [(ngModel)]="revenue.percentual" maxlength="100" type="text" size="20" style="width: 20%;">
+							</div>
+							<div class="mapping-field-container" style="display: block; width: 50%;">
+								<div class="mapping-field" style="width: 90%;">Percentual Restante</div>
+								<input [(ngModel)]="revenue.remainingPercentual" maxlength="100" type="text" size="20" style="width: 20%;">
+							</div>
+						</div>
+						<div style="display: flex">
+							<div class="mapping-field-container" style="display: block; width: 100%; direction: rtl; padding-right: 19px;">
+								<button (click)="onSave()" >Adicionar</button> 
+							</div>
+						</div>
+						<div>
+							<div class="mapping-field-container" style="display: block; width: 96.7%;">
+								<div class="mapping-field" style="width: 90%;">Fontes de Recurso Adicionadas</div>
+								<table cellspacing="0" style="width: 100%">
+									<thead>
+										<td class="table-header" style="width: 15%">Ações</td>
+										<td class="table-header" style="width: 28%">Fonte de Recurso</td>
+										<td class="table-header" style="width: 28%">Código de Aplicação</td>
+										<td class="table-header" style="width: 28%">Percentual %</td>
+									</thead>
+									<tbody>
+										<tr *ngFor="let rs of resourceSources" class="t-row">
+											<td class="t-columns">
+												<button (click)="onEdit(rs.dataSourceType)" style="padding: 1px 6px 1px 6px;">Editar</button>
+											</td>
+											<td class="t-columns" style="padding: 3px">{{rs.resourceSourceDescription}}</td>
+											<td class="t-columns">{{rs.applicationDescription}}</td>
+											<td class="t-columns">{{rs.percentual}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div style="width: 98%">
+					<div style="margin-top: 20px; font-size: 14px; font-weight: 600; margin-left:13px">Lista de Cotas</div>
+					<div class="mapping-panel" style="padding-bottom: 10px">
+						<div style="display: flex">
+							<div class="mapping-field-container" style="display: block; width: 50%;">
+								<div class="mapping-field" style="width: 90%;">Definir as Cotas?</div>
+								<input [(ngModel)]="revenue.quotaDefinitionNo" type="radio" name="quotaDefinition">
+								<input [(ngModel)]="revenue.quotaDefinitionYes" type="radio" name="quotaDefinition">
+							</div>
+						</div>
+						<div>
+							<div class="mapping-field-container" style="display: block; width: 96.7%;">
+								<table cellspacing="0" style="width: 100%">
+									<thead>
+										<td class="table-header" style="width: 50%">Período</td>
+										<td class="table-header" style="width: 50%">Valor (R$)</td>
+									</thead>
+									<tbody>
+										<tr *ngFor="let q of quotas" class="t-row">
+											<td class="t-columns" style="padding: 3px">{{q.startDate}} a {{q.endDate}}</td>
+											<td class="t-columns"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<div style="width: 60%; direction: rtl; margin-top: 10px">
+				<button (click)="onSave()" >Salvar</button> 
+				<button (click)="onBack()" style="margin-right: 5px">Cancelar</button> 
+			</div>
+		</div>
+	</div>
+</div>

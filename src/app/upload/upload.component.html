@@ -1,0 +1,56 @@
+<div class="local-card content">
+	<div>
+		<div class="tltle">Upload</div>
+		<div class="bordered">
+			<div style="margin: 25px 0 0 13px; display: flex; width: 52%">
+				<div (click)="onOpenUpload()" style=" display: flex; border: 1px solid rgb(184 205 241); width: 81%">
+					<input id="fileInput" type="file" (change)="onSelectFiles($event)" 
+						style="position: absolute; top: -10px; left:-10px; width:0px; height: 0px; opacity: 0">
+					<div style="width:84%">
+						<div style="margin: 2px 5px 0 23px; font-size: 14px;">{{file != null ? file.name : ''}}</div>
+					</div>
+					<div style="width:16%">
+						<button>Upload</button>
+					</div>
+				</div>
+				<div style="display: flex; margin: 0px 0 0 42px;">
+					<div style="font-size: 12px; margin: 3px 13px 0 0;">Versão</div>
+					<input [(ngModel)]="layoutVersion" type="text" maxlength="10" size="7" style="height: 13px;">
+				</div>
+				<div style="width:10%; margin: 1px 0px 0px 7%;">
+					<button (click)="onUpload()">Send</button>
+				</div>
+			</div>
+			<div style="margin:17px 0 0 13px;">
+				<div class="table-title">Uploads</div>
+				<div style="margin: 5px 0 10px 0; width:60%">
+					<table cellspacing="0" style="width: 100%">
+						<thead>
+							<td class="table-header">Nome do Arquivo</td>
+							<td class="table-header">Versão do Layout</td>
+							<td class="table-header">Data Upload</td>
+							<td class="table-header">Usuário</td>
+							<td class="table-header" style="width: 14%;">Status</td>
+						</thead>
+						<tbody>
+							<tr *ngFor="let upload of uploads" class="t-row">
+								<td class="t-columns">{{upload.fileName}}</td>
+								<td class="t-columns">{{upload.layoutVersion}}</td>
+								<td class="t-columns">{{upload.creationDate | date:'dd/MM/yyyy'}}</td>
+								<td class="t-columns">{{upload.userName}}</td>
+								<td class="t-columns">
+									{{upload.status == 'ACTIVE' ? 'Vigente' : 'Cancelado' }}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<button (click)="showUps()">Show UPS</button>
+					<div style="display:flex; margin-left: 10px; margin-top:5px;">
+						<div style="width:90%"></div>
+						<pagination [pagination]="pagination" [totalPages]="totalPages" (page)="onPage($event)"></pagination>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,80 @@
+<div class="local-card content">
+	<div>
+		<div class="tltle">Mapeamento</div>
+		<div class="bordered">
+			<div style="display: flex; margin:20px 0 0 13px;">
+				<div style="width: 45%;">
+					<div style="font-size: 13px; padding: 17px 8px 13px 0px; font-weight: 600">TaxOne ({{safxTableName}})</div>
+					<div style="margin: 5px 0 10px 0; width:100%">
+						<table cellspacing="0" style="width: 100%">
+							<thead>
+								<td class="table-header" style="width: 30%; padding: 0px 0 0 5px;">Nome Coluna</td>
+								<td class="table-header" style="width: 15%">Obrigatório</td>
+								<td class="table-header" style="width: 10%">Tamanho</td>
+								<td class="table-header" style="width: 10%">Tipo</td>
+								<td class="table-header" style="width: 30%"></td>
+							</thead>
+							<tbody>
+								<tr *ngFor="let field of safxColumns" class="t-row">
+									<td class="t-columns">{{field.name}}</td>
+									<td class="t-columns">{{field.required ? '*' : ''}}</td>
+									<td class="t-columns">{{field.size}}</td>
+									<td class="t-columns">{{field.type}}</td>
+									<td class="t-columns" style="padding: 1px">
+										<div (drop)="drop($event, field)" (dragover)="allowDrop($event)" 
+											style="display: flex; border: 1px solid; height: 16px; padding: 0px 0 0 4px;">
+											<div style="width:90%">{{field.dsColumnName}}</div>
+											<div *ngIf="field.dsColumnName" (click)="onRemoveAssociation(field);" 
+												style="width: 15%; text-align: center; margin-top: -2px; cursor: pointer;" >x</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div style="display:flex; margin-left: 10px; margin-top:5px;">
+							<div style="width:90%"></div>
+							<pagination [pagination]="safxPagination" [totalPages]="safxTotalPages" (page)="onPageSAFX($event)"></pagination>
+						</div>
+					</div>
+				</div>
+			
+				<div style="width: 45%; margin-left: 100px">
+					<div style="display:flex">
+						<div style="display: flex; font-size: 13px; padding: 18px 8px 13px 0px; font-weight: 600">
+							<div style="margin-right: 7px;">Campos Origem</div>
+							<select (change)="onDSCnage($event)" [(ngModel)]="selectedTable" style="height: 24px !important; padding: 0px; margin-top: -3px;">
+								<option *ngFor="let dsTable of dsTables"value="{{dsTable.id}}">{{dsTable.name}}</option>
+							</select>
+						</div>
+					</div>
+					<div style="margin-bottom: 10px;">
+						<table cellspacing="0" style="width: 100%">
+							<thead>
+								<td class="table-header" style="width: 28%">Nome Coluna</td>
+								<td class="table-header" style="width: 20%">Tipo</td>
+								<td class="table-header">Tamanho</td>
+							</thead>
+							<tbody>
+								<tr *ngFor="let field of dsColumns; let i = index;" class="t-row">
+									<td class="t-columns">
+										<div id="dd_{{i}}" draggable="true" (dragstart)="drag($event, field)">{{field.name}}</div>
+									</td>
+									<td class="t-columns">{{field.columnType}}</td>
+									<td class="t-columns">{{field.size}}</td>
+								</tr>
+							</tbody>
+						</table>
+						<div style="display:flex; margin-left: 10px; margin-top:5px;">
+							<div style="width:90%"></div>
+							<pagination [pagination]="dsPagination" [totalPages]="dsTotalPages" (page)="onPageDS($event)"></pagination>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div style="direction: rtl; margin: 42px 13px 0 0;">
+				<button (click)="onSave()">Salvar</button>
+				<button (click)="onBack()" style="margin-right:5px">Cancelar</button>
+			</div>
+		</div>
+	</div>
+</div>

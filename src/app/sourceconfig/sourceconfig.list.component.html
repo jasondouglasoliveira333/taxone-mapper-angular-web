@@ -1,0 +1,47 @@
+<div class="local-card content">
+	<div>
+		<!--h1>HI FOLKS</h1-->
+		<div class="tltle">Datasources</div>
+		<div>Oupot Signal{{doubleSignal()}}</div>
+		<button (click)="increaseCount()">increaseCount</button>
+		<div class="bordered">
+			<div style="width: 45%; margin: 20px 0 0 13px;">
+				<div style="display:flex">
+					<div class="table-title" style="padding: 0px 8px 6px 0px;">Datasources Configurados</div>
+					<button (click)="onAdd(sourceType)" [disabled]="sourceTypes.length == 0" style="margin-left: 33%; padding: 1px 6px 1px 6px;">Adicionar</button>
+					<select [(ngModel)]="sourceType" style="margin-left: 10px; min-width: 70px">
+						<option *ngFor="let st of sourceTypes" value="{{st}}">{{st}}</option>
+					</select>
+				</div>
+				<div style="margin: 5px 0 10px 0;">
+					<table cellspacing="0" style="width: 100%">
+						<thead>
+							<td class="table-header" style="width: 23%">Tipo</td>
+							<td class="table-header" style="width: 56%">Tabelas/Arquivos</td>
+							<td class="table-header" style="width: 10%"></td>
+						</thead>
+						<tbody>
+							<tr *ngFor="let ds of dataSourceConfigs" class="t-row">
+								<td class="t-columns" style="padding: 3px">{{ds.dataSourceType}}</td>
+								<td class="t-columns">{{ds.resourceNames}}</td>
+								<td class="t-columns">
+									<button (click)="onEdit(ds.dataSourceType)" style="padding: 1px 6px 1px 6px;">Editar</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div style="display:flex; margin-left: 10px; margin-top:5px;">
+						<div style="width:90%"></div>
+						<div style="display:flex">
+							<button class="page-button" style="border-radius: 5px 0 0 5px;"><<</button>
+							<button class="page-button"><</button>
+							<button class="page-button">1</button>
+							<button class="page-button">></button>
+							<button class="page-button" style="border-radius: 0 5px 5px 0;">>></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
