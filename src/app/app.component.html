@@ -8,13 +8,13 @@
 			</div>
 			<div style="margin-top: 10px;">
 			</div>
-			<div (click)="onNavigate('upload')" class="div-link">
+			<div (click)="onNavigate('upload')" routerLinkActive="active-link" class="div-link">
 				<div style="width:18%">
 					<i class="fas fa-upload" style="color:white; margin-right: 5px"></i>
 				</div>
 				<div style="color: white">Upload</div>
 			</div>
-			<div (click)="onNavigate('sourceconfig-list')" class="div-link">
+			<div (click)="onNavigate('sourceconfig-list')" [style.background-color]="selectedLink == 'sourceconfig-list' ? 'yellow' : 'rgb(0, 40, 104)'" class="div-link">
 				<div style="width:18%">
 					<i class="fas fa-cogs" style="color:white; margin-right: 5px"></i>
 				</div>
@@ -56,18 +56,29 @@
 				</div>
 				<div style="color: white">Angular19</div>
 			</div>
-			<div (click)="onNavigate('join')" class="div-link">
+			<div (click)="onNavigate('join-list')" class="div-link">
 				<div style="width:18%">
 					<i class="fas fa-bell" style="color:white; margin-right: 5px"></i>
 				</div>
-				<div style="color: white">Join</div>
+				<div style="color: white">Join List</div>
 			</div>
-			<div class="div-link">
+			<!--div (click)="onNavigateWithParam()" class="div-link">
 				<div style="width:18%">
-					<i class="fas fa-signal" style="color:white; margin-right: 5px"></i>
+					<i class="fas fa-bell" style="color:white; margin-right: 5px"></i>
 				</div>
-				<div style="color: white">Relatório</div>
+				<div style="color: white">Join Direct</div>
+			</div-->
+			@let joinId = 2;
+			<div class="div-link">
+				<a [routerLink]='["join/", joinId]' routerLinkActive="active-link" ><!-- {"joinId":  -->
+					<div style="width:18%">
+						<i class="fas fa-bell" style="color:white; margin-right: 5px"></i>
+					</div>
+					<div style="color: white">Join Link</div>
+				</a>
 			</div>
+			
+			
 		</div>
 		<div style="width: 90%">
 			<!-- Header -->

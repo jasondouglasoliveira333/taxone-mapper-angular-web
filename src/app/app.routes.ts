@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Routes, ResolveFn, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateFn } from '@angular/router';
 
 //import { LoginComponent } from './login/login.component';
 import { UploadComponent } from "./upload/upload.component";
@@ -12,6 +12,20 @@ import { MonitoringComponent } from './monitoring/monitoring.component';
 import { MonitoringDetailComponent } from './monitoring/monitoring.detail.component';
 import { RevenueComponent } from './revenue/revenue.component';
 import { AlertComponent } from './alert/alert.component';
+import { JoinComponent } from './join/join.component';
+import { JoinListComponent } from './join/join-list.component';
+import { NotFoundComponent } from './notfound/notfound.component';
+
+const resolvedChildATitle: ResolveFn<string> = () => Promise.resolve('child a');
+
+
+export const OURGuardFunction: CanActivateFn = (
+  next: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+) => {
+  console.log("In OURGuardFunction");
+  return true;
+}
 
 export const routes: Routes = [
 	{path : "", component: AlertComponent},
@@ -26,4 +40,9 @@ export const routes: Routes = [
 	{path : "monitoring-datail/:id", component: MonitoringDetailComponent},
 	{path : "revenue", component: RevenueComponent},
 	{path : "alert", component: AlertComponent},
+	{path : "join/:name", component: JoinComponent, title: resolvedChildATitle, canActivate: [OURGuardFunction] },
+	{path : "join-list", component: JoinListComponent},
+	{path : "**", component: NotFoundComponent}
 ];
+
+

@@ -1,5 +1,5 @@
 import { Component, isDevMode } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { environment } from './../environments/environment';
 
 import { LoadingService } from './components/loading.service';
@@ -9,16 +9,13 @@ import { LoadingService } from './components/loading.service';
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
-    imports: [RouterOutlet]
+    imports: [RouterOutlet, RouterLink, RouterLinkActive]
 })
 export class AppComponent {
   public resourcePath: string = '';
   public loading: boolean = false;
-  public lat = -23.5438633;
-  public lng = -46.8155989;
-  public zoom = 16;
-//  public lat = 51.678418;
-//  public lng = 7.809007;
+  public selectedLink = '';
+
 	
   constructor(private router: Router, public loadingService: LoadingService){
 	this.treatImagePath(document.URL);
@@ -42,6 +39,12 @@ export class AppComponent {
   }
 	
   onNavigate(path: string){
+	this.selectedLink = path;
     this.router.navigate([path]);
   }
+  
+  onNavigateWithParam(){
+	  this.router.navigate(['/join/1']);
+  }
+  
 }

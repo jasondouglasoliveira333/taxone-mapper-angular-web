@@ -7,12 +7,13 @@ import { environment } from './../../environments/environment';
 import { HttpClientWrapper } from '../components/httpclientwrapper';
 import { Paginator } from '../components/common/model';
 import { PaginationComponent } from '../components/pagination.component';
+import { UniqueRoleValidatorDirective } from '../components/role.directive';
 
 
 @Component({
     selector: 'schedule',
     templateUrl: 'schedule.component.html',
-	imports: [CommonModule, FormsModule, PaginationComponent]
+	imports: [CommonModule, FormsModule, PaginationComponent, UniqueRoleValidatorDirective]
 })
 
 export class ScheduleComponent {
