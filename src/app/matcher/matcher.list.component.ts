@@ -2,17 +2,18 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { environment } from './../../environments/environment';
 
-import { HttpClientWrapper } from '../components/httpclientwrapper';
 import { Paginator } from '../components/common/model';
 import { PaginationComponent } from '../components/pagination.component';
+import { MatcherService } from './shared/matcher.service';
 
+import { environment } from './../../environments/environment';
 
 @Component({
     selector: "matcher-list",
     templateUrl: "matcher.list.component.html",
-	imports: [CommonModule, FormsModule, PaginationComponent]
+	imports: [CommonModule, FormsModule, PaginationComponent],
+	providers: [MatcherService] 
 })
 export class MatcherListComponent {
 	private baseApi = environment.baseApi;
@@ -23,7 +24,7 @@ export class MatcherListComponent {
 	public totalPages : number = 0;
 	public pagination : Paginator = new Paginator();
 	
-	constructor(private router: Router, private http: HttpClientWrapper){
+	constructor(private router: Router, private matcherService: MatcherService){
 		this.loadSAFXTables();
 	}
 	
@@ -34,7 +35,7 @@ export class MatcherListComponent {
 		}
 		filter += '&justAssociated=' + this.justAssociated;
 		
-		this.http.get(this.baseApi + `safxTables?page=${this.pagination.page}&size=${this.pagination.size}` + filter)
+		this.matcherService.loadSAFXTables(filter, this.pagination)
 		.subscribe( (response : any) => {
 			//alert("ok:" + response);
 			this.safTables = response.content;

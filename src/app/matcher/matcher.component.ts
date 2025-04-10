@@ -3,22 +3,18 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { environment } from './../../environments/environment';
-
-import { HttpClientWrapper } from '../components/httpclientwrapper';
 import { Paginator } from '../components/common/model';
 import { PaginationComponent } from '../components/pagination.component';
-
+import { MatcherService } from './shared/matcher.service';
 
 @Component({
     selector: 'matcher',
     templateUrl: 'matcher.component.html',
-	imports: [CommonModule, FormsModule, PaginationComponent]
+	imports: [CommonModule, FormsModule, PaginationComponent],
+	providers: [MatcherService] 
 })
 
 export class MatcherComponent {
-	private baseApi = environment.baseApi;
-	
 	
 	public safxTableName: string = ''; 
 
@@ -42,7 +38,7 @@ export class MatcherComponent {
 	public dsTotalPages : number = 0;
 	public dsPagination : Paginator = new Paginator();
 
-	constructor(private http: HttpClientWrapper, private route: ActivatedRoute, private router: Router){
+	constructor(private route: ActivatedRoute, private router: Router, private matcherService: MatcherService){
 		this.selectedTableId = parseInt(route.snapshot.paramMap.get('tableName')!);
 		this.loadSAFXTable();
 		this.loadSAFXColumns();
@@ -51,8 +47,8 @@ export class MatcherComponent {
 	}
 	
 	loadSAFXTable(){
-		this.http.get(this.baseApi + `safxTables/${this.selectedTableId}`).
-		subscribe( (response : any) => {
+		this.matcherService.loadSAFXTable(this.selectedTableId)
+		.subscribe( (response : any) => {
 			this.safxTableName = response.name;
 			this.selectedDsTableId = response.dsTableId;
 			this.selectedTable = this.selectedDsTableId;
@@ -61,7 +57,7 @@ export class MatcherComponent {
 	}
 	
 	loadSAFXColumns(){
-		this.http.get(this.baseApi + `safxTables/${this.selectedTableId}/safxColumns`).
+		this.matcherService.loadSAFXColumns(this.selectedTableId).
 		subscribe( (response : any) => {
 			this.safxColumnsFull = response;
 			let pages = Math.trunc(response.length / this.safxPagination.size);
@@ -77,7 +73,7 @@ export class MatcherComponent {
 	}
 	
 	loadDSTables(){
-		this.http.get(this.baseApi + 'dsTables').
+		this.matcherService.loadDSTables().
 		subscribe( (response : any) => {
 			this.dsTables = response;
 			if (this.selectedDsTableId == null){
@@ -89,8 +85,7 @@ export class MatcherComponent {
 	
 	loadDSColumns(){
 		if (this.selectedDsTableId){
-			this.http.get(this.baseApi + `dsTables/${this.selectedDsTableId}/dsColumns?
-				page=${this.dsPagination.page}&size=${this.dsPagination.size}`).
+			this.matcherService.loadDSColumns(this.selectedDsTableId, this.dsPagination).
 			subscribe( (response : any) => {
 				this.dsColumns = response.content;
 				this.dsTotalPages = response.totalPages;
@@ -125,20 +120,18 @@ export class MatcherComponent {
 			alert("Todos os campos marcados com * são obrigatórios");
 			return;
 		}
-		this.http.put(this.baseApi + `safxTables/${this.selectedTableId}/dsTables/${this.selectedDsTableId}`, null)
+		this.matcherService.saveDSTAble(this.selectedTableId, this.selectedDsTableId)
 		.subscribe( () => {
 		},error => {
 			alert("Erro salvando SAFX");
 		});
-
-
-		this.http.put(this.baseApi + `safxTables/${this.selectedTableId}/safxColumns`, this.safxColumnsFull)
+		
+		this.matcherService.saveSAFXTAble(this.selectedTableId, this.safxColumnsFull)
 		.subscribe( (response : any) => {
 			alert("Mapeamento salvo com sucesso!");
 		},error => {
 			alert("Erro salvando SAFX");
 		});
-
 	}
 
 	valid(){

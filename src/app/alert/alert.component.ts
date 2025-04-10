@@ -4,19 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment } from './../../environments/environment';
 
-import { HttpClientWrapper } from '../components/httpclientwrapper';
 import { Paginator } from '../components/common/model';
 import { PaginationComponent } from '../components/pagination.component';
+
+import { AlertService } from './shared/alert.service';
 
 
 @Component({
     selector: 'alert',
     templateUrl: 'alert.component.html',
-	imports: [CommonModule, FormsModule, PaginationComponent]
+	imports: [CommonModule, FormsModule, PaginationComponent],
+	providers: [AlertService]
 })
-
 export class AlertComponent {
-	private baseApi = environment.baseApi;
 	public totalPages : number = 0;
 	public pagination : Paginator = new Paginator();
 
@@ -27,12 +27,12 @@ export class AlertComponent {
 	
 	public email: any = {};
 	
-	constructor(private router: Router, private http: HttpClientWrapper){
+	constructor(private router: Router, private alertService: AlertService){
 		this.loadEmails();
 	}
 	
 	loadEmails(){
-		this.http.get(this.baseApi + 'emails?page=0&size=1000')
+		this.alertService.loadEmails()
 		.subscribe((response : any) => {
 			this.emailsFull = response.content;
 			this.totalPages = this.calcPages();
@@ -62,7 +62,7 @@ export class AlertComponent {
 	}
 	
 	onDelete(id: number){
-		this.http.delete(this.baseApi + `emails/${id}`)
+		this.alertService.onDelete(id)
 		.subscribe(() => {
 			alert("Email excluido com sucesso");
 			this.loadEmails();
@@ -82,7 +82,7 @@ export class AlertComponent {
 	}
 	
 	onSave(){
-		this.http.post(this.baseApi +  'emails', this.emails)
+		this.alertService.onSave(this.emails)
 		.subscribe((response : any) => {
 			alert("Email salvo com sucesso");
 		}, error => {

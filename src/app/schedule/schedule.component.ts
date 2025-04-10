@@ -4,20 +4,20 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from './../../environments/environment';
 
-import { HttpClientWrapper } from '../components/httpclientwrapper';
 import { Paginator } from '../components/common/model';
 import { PaginationComponent } from '../components/pagination.component';
 import { UniqueRoleValidatorDirective } from '../components/role.directive';
+import { ScheduleService } from './shared/schedule.service';
 
 
 @Component({
     selector: 'schedule',
     templateUrl: 'schedule.component.html',
-	imports: [CommonModule, FormsModule, PaginationComponent, UniqueRoleValidatorDirective]
+	imports: [CommonModule, FormsModule, PaginationComponent, UniqueRoleValidatorDirective],
+	providers: [ScheduleService]
 })
 
 export class ScheduleComponent {
-	private baseApi = environment.baseApi;
 	public totalPages : number = 0;
 	public pagination : Paginator = new Paginator();
 	
@@ -61,7 +61,7 @@ export class ScheduleComponent {
 	
 	
 	
-	constructor(private http: HttpClientWrapper, private router: Router, private route: ActivatedRoute, private ref: ChangeDetectorRef){
+	constructor(private router: Router, private route: ActivatedRoute, private ref: ChangeDetectorRef, private scheduleService: ScheduleService){
 		this.pagination.size = 2;
 		let scheduleId = this.route.snapshot.paramMap.get('id')!;
 		let days = this.route.snapshot.paramMap.get('days')!;
@@ -80,8 +80,7 @@ export class ScheduleComponent {
 	
 	async loadSchedule(scheduleId: string){
 		let done = false;
-		this.http.get(this.baseApi + `schedules/${scheduleId}`)
-		.subscribe( (response : any) => {
+		this.scheduleService.loadSchedule(scheduleId).subscribe((response : any) => {
 			//alert(JSON.stringify(response));
 			this.scheduleConfig = response;
 			if (!this.scheduleConfig.safxTables){
@@ -153,8 +152,7 @@ export class ScheduleComponent {
 	}
 	
 	loadAvailableTables(){
-		this.http.get(this.baseApi + `safxTables?page=0&size=1000`)
-		.subscribe((response : any) => {
+		this.scheduleService.loadAvailableTables().subscribe((response : any) => {
 			this.fillAvaliableTables(response.content);
 		});
 	}
@@ -265,8 +263,7 @@ export class ScheduleComponent {
 		}
 		this.generateDaysValue();
 		this.generateHoursValue();
-		this.http.post(this.baseApi + 'schedules', this.scheduleConfig)
-		.subscribe((response:any) => {
+		this.scheduleService.onSave(this.scheduleConfig).subscribe((response:any) => {
 			alert("Agendamento salvo com sucesso");
 		});
 		
@@ -290,18 +287,17 @@ export class ScheduleComponent {
 	}
 
 	onGetColumns(){
-		this.http.get(this.baseApi + `safxTables/${this.criteria.safxColumn.safxTable.id}/safxColumns?associated=true`)
-		.subscribe((response: any) => {
+		this.scheduleService.onGetColumns(this.criteria.safxColumn.safxTable.id).subscribe((response: any) => {
 			this.safxColumns = response;
 		});
 	}
 	
 	onProcess(){
-		this.http.get(this.baseApi + `schedules/${this.scheduleConfig.id}/process`)
+		/*this.http.get(this.baseApi + `schedules/${this.scheduleConfig.id}/process`)
 		.subscribe((response : any) => {
 			alert("Test de Execucao do Agendamento realizado com sucesso");
 		});
-
+		*/
 	}
 	
 	onDateNumericKeydown(e: any){
