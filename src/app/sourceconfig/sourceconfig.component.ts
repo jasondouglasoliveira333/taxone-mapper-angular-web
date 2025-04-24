@@ -7,12 +7,14 @@ import { environment } from './../../environments/environment';
 import { HttpClientWrapper } from '../components/httpclientwrapper';
 import { Paginator } from '../components/common/model';
 import { PaginationComponent } from '../components/pagination.component';
+import { SourceConfigService } from './shared/sourceconfig.service';
 
 
 @Component({
     selector: 'sourceconfig',
     templateUrl: 'sourceconfig.component.html',
-	imports: [CommonModule, FormsModule, PaginationComponent]
+	imports: [CommonModule, FormsModule, PaginationComponent],
+	providers: [SourceConfigService]	
 })
 
 export class SourceConfigComponent {
@@ -27,7 +29,7 @@ export class SourceConfigComponent {
 	public dsTables: any[] = [];
 	public dsColumns: any[] = [];
 	
-	constructor(private http: HttpClientWrapper, private route: ActivatedRoute, private router: Router){
+	constructor(private route: ActivatedRoute, private router: Router, private sourceConfigService: SourceConfigService){
 		this.dataSourceType = this.route.snapshot.paramMap.get('sourceType')!;
 		let operation = this.route.snapshot.paramMap.get('operation')!;
 		if (operation == 'A') {
@@ -42,7 +44,7 @@ export class SourceConfigComponent {
 	}
 	
 	loadDataSourceConfig(){
-		this.http.get(this.baseApi + `dataSourceConfigs/${this.dataSourceType}`)
+		this.sourceConfigService.loadDataSourceConfig(this.dataSourceType)
 		.subscribe( (response : any) => {
 			//alert(JSON.stringify(response));
 			this.dataSourceConfig = response;
@@ -50,7 +52,7 @@ export class SourceConfigComponent {
 	}
 
 	loadDSTables(){
-		this.http.get(this.baseApi + `dataSourceConfigs/${this.dataSourceType}/dsTables`)
+		this.sourceConfigService.loadDSTables(this.dataSourceType)
 		.subscribe( (response : any) => {
 			this.dsTables = response;
 			if (this.dsTables.length > 0){
@@ -61,10 +63,8 @@ export class SourceConfigComponent {
 	}
 
 	loadDSColumns(){
-		this.http.get(this.baseApi + `dataSourceConfigs/${this.dataSourceType}/dsTables/${this.dsTableId}/dsColumns
-			?page=${this.pagination.page}&size=${this.pagination.size}`)
+		this.sourceConfigService.loadDSColumns(this.dataSourceType, this.dsTableId, this.pagination)
 		.subscribe( (response : any) => {
-			//alert("ok:" + response);
 			this.dsColumns = response.content;
 			this.totalPages = response.totalPages;
 		});
@@ -102,7 +102,7 @@ export class SourceConfigComponent {
 			alert("Todos os campos são obrigatórios");
 			return;
 		}
-		this.http.post(this.baseApi + `dataSourceConfigs/${this.dataSourceType}/metadata`, this.dataSourceConfig)
+		this.sourceConfigService.metadata(this.dataSourceType, this.dataSourceConfig)
 		.subscribe( (response : any) => {
 			this.loadDSTables();
 			alert("Metadata obtido com sucesso");
@@ -116,7 +116,8 @@ export class SourceConfigComponent {
 			alert("Todos os campos são obrigatórios");
 			return;
 		}
-		this.http.post(this.baseApi + `dataSourceConfigs/${this.dataSourceType}`, this.dataSourceConfig)
+		
+		this.sourceConfigService.save(this.dataSourceType, this.dataSourceConfig)
 		.subscribe( (response : any) => {
 			alert("Datasource salvo com sucesso!");
 			this.loadDSTables();

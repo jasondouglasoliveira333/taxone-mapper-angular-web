@@ -9,7 +9,7 @@ import { LoadingService } from './components/loading.service';
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
-    imports: [RouterOutlet, RouterLink, RouterLinkActive]
+    imports: [RouterOutlet, RouterLinkActive]
 })
 export class AppComponent {
   public resourcePath: string = '';

@@ -7,12 +7,14 @@ import { environment } from './../../environments/environment';
 import { HttpClientWrapper } from '../components/httpclientwrapper';
 import { Paginator } from '../components/common/model';
 import { PaginationComponent } from '../components/pagination.component';
+import { MonitoringService } from './shared/monitoring.service';
 
 
 @Component({
     selector: 'monitoring',
     templateUrl: 'monitoring.component.html',
-    imports: [CommonModule, FormsModule, PaginationComponent]
+    imports: [CommonModule, FormsModule, PaginationComponent],
+	providers: [MonitoringService]	
 })
 
 export class MonitoringComponent implements OnInit{
@@ -34,7 +36,7 @@ export class MonitoringComponent implements OnInit{
 	private status: string = 'PROCESSED';
 
 	
-	constructor(private http: HttpClientWrapper, private router: Router, private elementRef:ElementRef){
+	constructor(private router: Router, private elementRef:ElementRef, private monitoringService: MonitoringService){
 		
 	}
 	
@@ -45,7 +47,7 @@ export class MonitoringComponent implements OnInit{
 	}
 	
 	loadScheduleLogsStatisticts(){
-		this.http.get(this.baseApi + 'schedulelogs/statistics')
+		this.monitoringService.scheduleLogsStatisticts()
 		.subscribe((response:any) => {
 			this.loadScheduleLogsArray(response);
 			this.createChartElement();
@@ -115,7 +117,7 @@ export class MonitoringComponent implements OnInit{
 	}
 	
 	loadScheduleLogs(){
-		this.http.get(this.baseApi + `schedulelogs?status=${this.status}&page=${this.pagination.page}&size=${this.pagination.size}`)
+		this.monitoringService.scheduleLogs(this.status, this.pagination)
 		.subscribe((response:any) => {
 			this.scheduleLogs = response.content;
 			this.transleteStatusSchedules();

@@ -7,11 +7,14 @@ import { environment } from './../../environments/environment';
 
 import { HttpClientWrapper } from '../components/httpclientwrapper';
 import { LoadingService } from '../components/loading.service';
+import { SourceConfigService } from './shared/sourceconfig.service';
+
 
 @Component({
     selector: 'sourceconfig-list',
     templateUrl: 'sourceconfig.list.component.html',
-	imports: [CommonModule, FormsModule]
+	imports: [CommonModule, FormsModule],
+	providers: [SourceConfigService]	
 })
 
 export class SourceConfigListComponent {
@@ -29,12 +32,12 @@ export class SourceConfigListComponent {
 	public doubleSignal : Signal<number> = computed(() => this.loadingService.customer().shared * 3);
 
 	
-	constructor(private router: Router, private http: HttpClientWrapper, private loadingService: LoadingService){
+	constructor(private router: Router, private loadingService: LoadingService, private sourceConfigService: SourceConfigService){
 		this.loadDataSources();
 	}
 	
 	loadDataSources(){
-		this.http.get(this.baseApi + "dataSourceConfigs").
+		this.sourceConfigService.loadDataSources().
 		subscribe( (response : any) => {
 			this.dataSourceConfigs = response;
 			//remove the sourceTypes already used
