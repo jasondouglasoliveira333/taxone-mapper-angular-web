@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment } from './../../environments/environment';
 
-import { Paginator } from '../components/common/model';
+import { Paginator, Email, EmailPage } from '../components/common/model';
 import { PaginationComponent } from '../components/pagination.component';
 
 import { AlertService } from './shared/alert.service';
@@ -22,10 +22,10 @@ export class AlertComponent {
 
 	public notificationTypes: string[] = ['ALL', 'OK', 'ERROR'];
 	
-	public emails: any[] = [];
-	public emailsFull: any[] = [];
+	public emails: Email[] = [];
+	public emailsFull: Email[] = [];
 	
-	public email: any = {};
+	public email: Email = new Email();
 	
 	constructor(private router: Router, private alertService: AlertService){
 		this.loadEmails();
@@ -33,7 +33,7 @@ export class AlertComponent {
 	
 	loadEmails(){
 		this.alertService.loadEmails()
-		.subscribe((response : any) => {
+		.subscribe((response : EmailPage) => {
 			this.emailsFull = response.content;
 			this.totalPages = this.calcPages();
 			//alert("this.totalPages:" + this.totalPages);
@@ -76,14 +76,14 @@ export class AlertComponent {
 		}
 		
 		this.emailsFull.splice(0,0,this.email);
-		this.email = {};
+		this.email = new Email();
 		this.totalPages = this.calcPages(); 
 		this.onPage(this.pagination.page);
 	}
 	
 	onSave(){
 		this.alertService.onSave(this.emails)
-		.subscribe((response : any) => {
+		.subscribe((response : Email[]) => {
 			alert("Email salvo com sucesso");
 		}, error => {
 			alert("Erro salvando email");

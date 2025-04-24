@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from './../../environments/environment';
 
 import { HttpClientWrapper } from '../components/httpclientwrapper';
-import { Paginator } from '../components/common/model';
+import { Paginator, SourceConfig, DSColumns, DSColumnsPage, DSTable } from '../components/common/model';
 import { PaginationComponent } from '../components/pagination.component';
 import { SourceConfigService } from './shared/sourceconfig.service';
 
@@ -14,7 +14,7 @@ import { SourceConfigService } from './shared/sourceconfig.service';
     selector: 'sourceconfig',
     templateUrl: 'sourceconfig.component.html',
 	imports: [CommonModule, FormsModule, PaginationComponent],
-	providers: [SourceConfigService]	
+	providers: [SourceConfigService]
 })
 
 export class SourceConfigComponent {
@@ -25,17 +25,16 @@ export class SourceConfigComponent {
 	public dataSourceType : string = '';
 	public dsTableId : number = 0;
 	
-	public dataSourceConfig : any;
-	public dsTables: any[] = [];
-	public dsColumns: any[] = [];
+	public dataSourceConfig : SourceConfig = new SourceConfig();
+	public dsTables: DSTable[] = [];
+	public dsColumns: DSColumns[] = [];
 	
 	constructor(private route: ActivatedRoute, private router: Router, private sourceConfigService: SourceConfigService){
 		this.dataSourceType = this.route.snapshot.paramMap.get('sourceType')!;
 		let operation = this.route.snapshot.paramMap.get('operation')!;
 		if (operation == 'A') {
-			this.dataSourceConfig = {
-				dataSourceType: this.dataSourceType
-			}
+			this.dataSourceConfig = new SourceConfig();
+			this.dataSourceConfig.dataSourceType = this.dataSourceType;
 		}else{
 			this.loadDataSourceConfig();
 		}
@@ -44,18 +43,17 @@ export class SourceConfigComponent {
 	}
 	
 	loadDataSourceConfig(){
-		this.sourceConfigService.loadDataSourceConfig(this.dataSourceType)
-		.subscribe( (response : any) => {
-			//alert(JSON.stringify(response));
+		this.sourceConfigService.dataSourceConfig(this.dataSourceType)
+		.subscribe( (response : SourceConfig) => {
 			this.dataSourceConfig = response;
 		});
 	}
 
 	loadDSTables(){
-		this.sourceConfigService.loadDSTables(this.dataSourceType)
-		.subscribe( (response : any) => {
+		this.sourceConfigService.dsTables(this.dataSourceType)
+		.subscribe( (response : DSTable[]) => {
 			this.dsTables = response;
-			if (this.dsTables.length > 0){
+			if (this.dsTables.length > 0 && this.dsTables[0].id != null){//this.dsTables[0].id != null because model
 				this.dsTableId = this.dsTables[0].id;
 				this.loadDSColumns();
 			}
@@ -63,8 +61,8 @@ export class SourceConfigComponent {
 	}
 
 	loadDSColumns(){
-		this.sourceConfigService.loadDSColumns(this.dataSourceType, this.dsTableId, this.pagination)
-		.subscribe( (response : any) => {
+		this.sourceConfigService.dsColumns(this.dataSourceType, this.dsTableId, this.pagination)
+		.subscribe( (response : DSColumnsPage) => {
 			this.dsColumns = response.content;
 			this.totalPages = response.totalPages;
 		});
@@ -103,7 +101,7 @@ export class SourceConfigComponent {
 			return;
 		}
 		this.sourceConfigService.metadata(this.dataSourceType, this.dataSourceConfig)
-		.subscribe( (response : any) => {
+		.subscribe( () => {
 			this.loadDSTables();
 			alert("Metadata obtido com sucesso");
 		}, error => {
@@ -118,7 +116,7 @@ export class SourceConfigComponent {
 		}
 		
 		this.sourceConfigService.save(this.dataSourceType, this.dataSourceConfig)
-		.subscribe( (response : any) => {
+		.subscribe( () => {
 			alert("Datasource salvo com sucesso!");
 			this.loadDSTables();
 		}, error => {

@@ -13,23 +13,23 @@ export class MatcherService{
 	
 	constructor(private http: HttpClientWrapper){}
 	
-	loadSAFXTables(filter: string, pagination: Paginator){
+	safxTables(filter: string, pagination: Paginator){
 		return this.http.get(this.baseApi + `safxTables?page=${pagination.page}&size=${pagination.size}` + filter);
 	}
 
-	loadSAFXTable(selectedTableId: number){
+	safxTable(selectedTableId: number){
 		return this.http.get(this.baseApi + `safxTables/${selectedTableId}`);
 	}
 
-	loadSAFXColumns(selectedTableId: number){
+	safxColumns(selectedTableId: number){
 		return this.http.get(this.baseApi + `safxTables/${selectedTableId}/safxColumns`);
 	}
 
-	loadDSTables(){
+	dsTables(){
 		return this.http.get(this.baseApi + 'dsTables');
 	}
 	
-	loadDSColumns(selectedDsTableId: number, dsPagination: Paginator){
+	dsColumns(selectedDsTableId: number, dsPagination: Paginator){
 		return this.http.get(this.baseApi + `dsTables/${selectedDsTableId}/dsColumns?
 				page=${dsPagination.page}&size=${dsPagination.size}`);
 	}

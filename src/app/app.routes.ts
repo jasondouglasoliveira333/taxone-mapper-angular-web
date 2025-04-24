@@ -14,9 +14,6 @@ import { RevenueComponent } from './revenue/revenue.component';
 import { AlertComponent } from './alert/alert.component';
 import { NotFoundComponent } from './notfound/notfound.component';
 
-const resolvedChildATitle: ResolveFn<string> = () => Promise.resolve('child a');
-
-
 export const OURGuardFunction: CanActivateFn = (
   next: ActivatedRouteSnapshot,
   state: RouterStateSnapshot

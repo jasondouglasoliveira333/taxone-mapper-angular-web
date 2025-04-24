@@ -6,14 +6,13 @@ import { environment } from './../../environments/environment';
 
 import { Paginator } from '../components/common/model';
 import { PaginationComponent } from '../components/pagination.component';
-import { UniqueRoleValidatorDirective } from '../components/role.directive';
 import { ScheduleService } from './shared/schedule.service';
 
 
 @Component({
     selector: 'schedule',
     templateUrl: 'schedule.component.html',
-	imports: [CommonModule, FormsModule, PaginationComponent, UniqueRoleValidatorDirective],
+	imports: [CommonModule, FormsModule, PaginationComponent],
 	providers: [ScheduleService]
 })
 
@@ -80,7 +79,7 @@ export class ScheduleComponent {
 	
 	async loadSchedule(scheduleId: string){
 		let done = false;
-		this.scheduleService.loadSchedule(scheduleId).subscribe((response : any) => {
+		this.scheduleService.schedule(scheduleId).subscribe((response : any) => {
 			//alert(JSON.stringify(response));
 			this.scheduleConfig = response;
 			if (!this.scheduleConfig.safxTables){
@@ -152,7 +151,7 @@ export class ScheduleComponent {
 	}
 	
 	loadAvailableTables(){
-		this.scheduleService.loadAvailableTables().subscribe((response : any) => {
+		this.scheduleService.availableSAFXTables().subscribe((response : any) => {
 			this.fillAvaliableTables(response.content);
 		});
 	}
@@ -263,7 +262,7 @@ export class ScheduleComponent {
 		}
 		this.generateDaysValue();
 		this.generateHoursValue();
-		this.scheduleService.onSave(this.scheduleConfig).subscribe((response:any) => {
+		this.scheduleService.save(this.scheduleConfig).subscribe((response:any) => {
 			alert("Agendamento salvo com sucesso");
 		});
 		
@@ -287,7 +286,7 @@ export class ScheduleComponent {
 	}
 
 	onGetColumns(){
-		this.scheduleService.onGetColumns(this.criteria.safxColumn.safxTable.id).subscribe((response: any) => {
+		this.scheduleService.safxColumns(this.criteria.safxColumn.safxTable.id).subscribe((response: any) => {
 			this.safxColumns = response;
 		});
 	}

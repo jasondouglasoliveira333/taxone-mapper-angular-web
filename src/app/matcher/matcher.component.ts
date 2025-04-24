@@ -47,7 +47,7 @@ export class MatcherComponent {
 	}
 	
 	loadSAFXTable(){
-		this.matcherService.loadSAFXTable(this.selectedTableId)
+		this.matcherService.safxTable(this.selectedTableId)
 		.subscribe( (response : any) => {
 			this.safxTableName = response.name;
 			this.selectedDsTableId = response.dsTableId;
@@ -57,7 +57,7 @@ export class MatcherComponent {
 	}
 	
 	loadSAFXColumns(){
-		this.matcherService.loadSAFXColumns(this.selectedTableId).
+		this.matcherService.safxColumns(this.selectedTableId).
 		subscribe( (response : any) => {
 			this.safxColumnsFull = response;
 			let pages = Math.trunc(response.length / this.safxPagination.size);
@@ -73,7 +73,7 @@ export class MatcherComponent {
 	}
 	
 	loadDSTables(){
-		this.matcherService.loadDSTables().
+		this.matcherService.dsTables().
 		subscribe( (response : any) => {
 			this.dsTables = response;
 			if (this.selectedDsTableId == null){
@@ -85,7 +85,7 @@ export class MatcherComponent {
 	
 	loadDSColumns(){
 		if (this.selectedDsTableId){
-			this.matcherService.loadDSColumns(this.selectedDsTableId, this.dsPagination).
+			this.matcherService.dsColumns(this.selectedDsTableId, this.dsPagination).
 			subscribe( (response : any) => {
 				this.dsColumns = response.content;
 				this.dsTotalPages = response.totalPages;

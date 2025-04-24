@@ -19,6 +19,7 @@
 							</thead>
 							<tbody>
 								@for (s of schedules; track s.id) {
+								<tr>
 									<td class="t-columns">{{s.name}}</td>
 									<td class="t-columns">{{s.userName}}</td>
 									@if (s.status == 'ACTIVE'){
@@ -26,28 +27,14 @@
 									}@else {
 										<td class="t-columns">Inativo</td>
 									}
-									@switch(s.status){
-										@case ('ACTIVE'){
-											<td class="t-columns">
-												<button (click)="onEdit(s.id)" style="padding: 1px 6px 1px 6px;">Editar</button>
-											</td>
-										}
-										@case ('INACTIVE'){
-											<td class="t-columns" style="width: 10px;">
-												<button (click)="onDelete(s.id)" style="padding: 1px 6px 1px 6px;">Excluir</button>
-											</td>
-										}
-										@default{
-											<td class="t-columns">
-												<button (click)="onEdit(s.id)" style="padding: 1px 6px 1px 6px;">Editar</button>
-											</td>
-											<td class="t-columns" style="width: 10px;">
-												<button (click)="onDelete(s.id)" style="padding: 1px 6px 1px 6px;">Excluir</button>
-											</td>
-										}
-									}
+									<td class="t-columns">
+										<button (click)="onEdit(s.id)" style="padding: 1px 6px 1px 6px;">Editar</button>
+									</td>
+									<td class="t-columns" style="width: 10px;">
+										<button (click)="onDelete(s.id)" style="padding: 1px 6px 1px 6px;">Excluir</button>
+									</td>
 									<td class="t-columns"></td>
-									
+								</tr>
 								}
 							</tbody>
 						</table>

@@ -94,7 +94,7 @@
 							</thead>
 							<tbody>
 								<tr *ngFor="let field of dsColumns" class="t-row">
-									<td class="t-columns" style="padding: 3px">{{field.dsTable.name}}</td>
+									<td class="t-columns" style="padding: 3px">{{field.dsTable?.name}}</td>
 									<td class="t-columns" style="padding: 3px">{{field.name}}</td>
 									<td class="t-columns">{{field.columnType}}</td>
 									<td class="t-columns">{{field.size}}</td>

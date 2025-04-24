@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClientWrapper } from '../../components/httpclientwrapper';
-import { Paginator } from '../../components/common/model';
+import { Paginator, UploadPage } from '../../components/common/model';
 
 
 import { environment } from './../../../environments/environment';
@@ -14,11 +14,11 @@ export class UploadService{
 	constructor(private http: HttpClientWrapper){}
 
 	uploads(pagination: Paginator){
-		return this.http.get(this.baseApi + `uploads?page=${pagination.page}&size=${pagination.size}`);
+		return this.http.getaa<UploadPage>(this.baseApi + `uploads?page=${pagination.page}&size=${pagination.size}`);
 	}
 	
 	upload(formData: FormData){
-		return this.http.post(this.baseApi + "uploads", formData);
+		return this.http.postaa<FormData>(this.baseApi + "uploads", formData);
 	}
 }
 

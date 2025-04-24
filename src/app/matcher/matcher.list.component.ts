@@ -35,7 +35,7 @@ export class MatcherListComponent {
 		}
 		filter += '&justAssociated=' + this.justAssociated;
 		
-		this.matcherService.loadSAFXTables(filter, this.pagination)
+		this.matcherService.safxTables(filter, this.pagination)
 		.subscribe( (response : any) => {
 			//alert("ok:" + response);
 			this.safTables = response.content;

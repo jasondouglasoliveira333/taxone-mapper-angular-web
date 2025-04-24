@@ -5,10 +5,7 @@
 		<div class="bordered">
 			<div style="display: flex; margin: 30px 0 0 28px;">
 				<div style="font-size: 12px; margin-right: 13px;">Nome</div>
-				<input [(ngModel)]="scheduleConfig.name" type="text" maxlength="40" size="40" #name="ngModel" appUniqueRole> <!-- required -->
-				<div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-						Name is required
-				</div>
+				<input [(ngModel)]="scheduleConfig.name" type="text" maxlength="40" size="40" #name="ngModel"> <!-- required -->
 			</div>
 			<div style="display:flex">
 				<div style="display: flex; width: 50%">

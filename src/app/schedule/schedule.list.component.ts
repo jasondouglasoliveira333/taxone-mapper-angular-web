@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { environment } from './../../environments/environment';
 
 import { HttpClientWrapper } from '../components/httpclientwrapper';
-import { Paginator } from '../components/common/model';
+import { Paginator, Schedule, SchedulePage } from '../components/common/model';
 
 import { LoadingService } from '../components/loading.service';
 import { PaginationComponent } from '../components/pagination.component';
@@ -30,7 +30,7 @@ export class ScheduleListComponent {
 	}
 	
 	loadSchedules(){
-		this.scheduleService.loadSchedules(this.pagination).subscribe((response : any) => {
+		this.scheduleService.schedules(this.pagination).subscribe((response : SchedulePage) => {
 			this.schedules = response.content;
 			this.totalPages = response.totalPages;
 		});
@@ -41,7 +41,7 @@ export class ScheduleListComponent {
 	}
 	
 	onEdit(id: string){
-		this.scheduleService.loadPeriods(id).subscribe((response : any) => {
+		this.scheduleService.periods(id).subscribe((response : any) => {
 			let days = response.days;
 			let hours = response.hours;
 			this.router.navigate(['schedule', { 'id' : id , 'days': days, 'hours': hours}]);
@@ -50,7 +50,7 @@ export class ScheduleListComponent {
 	}
 
 	onDelete(id: number){
-		this.scheduleService.onDelete(id).subscribe(() => {
+		this.scheduleService.delete(id).subscribe(() => {
 			alert("Deletado com sucesso");
 			this.loadSchedules();
 		});

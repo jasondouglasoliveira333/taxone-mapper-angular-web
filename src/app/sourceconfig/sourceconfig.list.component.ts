@@ -9,6 +9,9 @@ import { HttpClientWrapper } from '../components/httpclientwrapper';
 import { LoadingService } from '../components/loading.service';
 import { SourceConfigService } from './shared/sourceconfig.service';
 
+import { SourceConfig } from '../components/common/model';
+
+
 
 @Component({
     selector: 'sourceconfig-list',
@@ -22,54 +25,29 @@ export class SourceConfigListComponent {
 	
 	public sourceTypes: string[] = ['Database', 'TXT', 'FTP'];
 	
-	public dataSourceConfigs: any[] = [];
+	public dataSourceConfigs: SourceConfig[] = [];
 	
 	public sourceType: string = 'Database';
-	
-	incr = 1;
-
-	//public doubleSignal : Signal<number> = computed(() => this.loadingService.count() * 3);
-	public doubleSignal : Signal<number> = computed(() => this.loadingService.customer().shared * 3);
-
 	
 	constructor(private router: Router, private loadingService: LoadingService, private sourceConfigService: SourceConfigService){
 		this.loadDataSources();
 	}
 	
 	loadDataSources(){
-		this.sourceConfigService.loadDataSources().
-		subscribe( (response : any) => {
+		this.sourceConfigService.dataSources().
+		subscribe( (response : SourceConfig[]) => {
 			this.dataSourceConfigs = response;
-			//remove the sourceTypes already used
-			this.dataSourceConfigs.forEach(dsc => {
-				let idx = this.sourceTypes.indexOf(dsc.dataSourceType);
-				//this.sourceTypes.splice(idx, 1);
-			});
 		}, error => {
 			alert("Error listing the datasources");
 		});
 	}
 	
-	onEdit(sourceType: string){
+	onEdit(sourceType: string | null){
 		this.router.navigate(['sourceconfig', sourceType, 'E']);
 	}
 	
 	onAdd(sourceType: string){
 		this.router.navigate(['sourceconfig', sourceType, 'A']);
-	}
-
-	increaseCount(){
-		//this.count.update(value => value + 1);
-		//this.loadingService.count.update(value => value + 1);
-		
-		let p = this.loadingService.customer();
-		alert("p.shared:" + p.shared);
-		p.shared = 10 * this.incr;
-		this.incr++;
-		//this.loadingService.customer.set(null);
-		this.loadingService.customer.set(p);
-
-		
 	}
 	
 }

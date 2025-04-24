@@ -1,22 +1,22 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { environment } from './../../environments/environment';
 
-import { HttpClientWrapper } from '../components/httpclientwrapper';
+import { LoginService } from './shared/login.service';
+
 
 @Component({
     selector: 'login',
     templateUrl: 'login.component.html',
-    standalone: false
+	providers: [LoginService]
 })
 
 export class LoginComponent{
 	private baseApi = environment.baseApi;
 	public user: any = {};
 	
-	constructor(private http: HttpClient, private router: Router){
+	constructor(private router: Router, private loginService: LoginService){
 		//sessionStorage.removeItem("token");
 		if (sessionStorage.getItem("token")){
 			//alert("Has token");
@@ -30,7 +30,7 @@ export class LoginComponent{
 			return;
 		}
 		
-		this.http.post(this.baseApi + 'authenticate', this.user)
+		this.loginService.login(this.user)
 		.subscribe((response: any) => {
 			//alert('response:' + JSON.stringify(response));
 			console.log("response.token:" + response.token);

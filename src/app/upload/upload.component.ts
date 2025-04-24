@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { environment } from './../../environments/environment';
 
 import { HttpClientWrapper } from '../components/httpclientwrapper';
-import { Paginator } from '../components/common/model';
+import { Paginator, Upload, UploadPage } from '../components/common/model';
 import { PaginationComponent } from '../components/pagination.component';
 import { UploadService } from './shared/upload.service';
 
@@ -21,7 +21,7 @@ export class UploadComponent {
 	public totalPages : number = 0;
 	public pagination : Paginator = new Paginator();
 	
-	public uploads: any[] = [];
+	public uploads: Upload[] = [];
 	
 	constructor(private uploadService: UploadService){
 		this.loadUploads();
@@ -29,7 +29,7 @@ export class UploadComponent {
 	
 	loadUploads(){
 		this.uploadService.uploads(this.pagination)
-		.subscribe( (response : any) => {
+		.subscribe( (response : UploadPage) => {
 			//alert("ok:" + response);
 			this.uploads = response.content;
 			this.totalPages = response.totalPages;
