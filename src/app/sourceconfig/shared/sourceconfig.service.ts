@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClientWrapper } from '../../components/httpclientwrapper';
-import { Paginator, SourceConfig, DSTable, DSColumnsPage } from '../../components/common/model';
+import { Paginator, SourceConfig, DSTable, DSColumnPage } from '../../components/common/model';
 
 
 import { environment } from './../../../environments/environment';
@@ -26,7 +26,7 @@ export class SourceConfigService{
 	}
 	
 	dsColumns(dataSourceType: string, dsTableId: number, paginator: Paginator){
-		return this.http.getaa<DSColumnsPage>(this.baseApi + `dataSourceConfigs/${dataSourceType}/dsTables/${dsTableId}/dsColumns
+		return this.http.getaa<DSColumnPage>(this.baseApi + `dataSourceConfigs/${dataSourceType}/dsTables/${dsTableId}/dsColumns
 			?page=${paginator.page}&size=${paginator.size}`);
 	}
 	

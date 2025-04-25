@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClientWrapper } from '../../components/httpclientwrapper';
-import { Paginator, Schedule, SchedulePage } from '../../components/common/model';
+import { Paginator, Schedule, SchedulePage, SAFXTable, SAFXTablePage, SAFXColumn } from '../../components/common/model';
 
 
 import { environment } from './../../../environments/environment';
@@ -16,7 +16,7 @@ export class ScheduleService{
 
 	schedules(pagination: Paginator){
 		return this.http.getaa<SchedulePage>(this.baseApi + `schedules?page=${pagination.page}&size=${pagination.size}`);
-	}	
+	}
 
 	periods(id: string){
 		return this.http.get(this.baseApi + `schedules/${id}/periodes`);
@@ -31,14 +31,14 @@ export class ScheduleService{
 	}
 
 	availableSAFXTables(){
-		return this.http.get(this.baseApi + `safxTables?page=0&size=1000`);
+		return this.http.getaa<SAFXTablePage>(this.baseApi + `safxTables?page=0&size=1000`);
 	}
 	
-	save(scheduleConfig: any){
-		return this.http.post(this.baseApi + 'schedules', scheduleConfig);
+	save(scheduleConfig: Schedule){
+		return this.http.postaa<Schedule>(this.baseApi + 'schedules', scheduleConfig);
 	}
 	
 	safxColumns(safxTableId: number){
-		return this.http.get(this.baseApi + `safxTables/${safxTableId}/safxColumns?associated=true`);
+		return this.http.getaa<SAFXColumn[]>(this.baseApi + `safxTables/${safxTableId}/safxColumns?associated=true`);
 	}
 }

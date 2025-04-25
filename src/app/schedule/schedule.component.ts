@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from './../../environments/environment';
 
-import { Paginator } from '../components/common/model';
+import { Paginator, SAFXColumn, Schedule, SAFXTablePage, SAFXTable } from '../components/common/model';
 import { PaginationComponent } from '../components/pagination.component';
 import { ScheduleService } from './shared/schedule.service';
 
@@ -20,8 +20,8 @@ export class ScheduleComponent {
 	public totalPages : number = 0;
 	public pagination : Paginator = new Paginator();
 	
-	public scheduleConfig: any = { safxTables : [], criterias : []};
-	public availableTables: any[] = [];
+	public scheduleConfig: Schedule = new Schedule();
+	public availableTables: SAFXTable[] = [];
 	public selectedAvaiableTables = [];
 	public selectedSelectedTables = [];
 	
@@ -44,7 +44,7 @@ export class ScheduleComponent {
 	public selectedHours : any[] = [];
 
 	public criteriasOnePage : any[] = [];
-	public safxColumns: any = [];
+	public safxColumns: SAFXColumn[] = [];
 	public operators = ['=', '!=', '>=', '<=', 'between', 'not empty', 'empty'];
 	
 	public criteria : any = { 'safxColumn' : { 'safxTable' : {'id' : null } } };
@@ -65,7 +65,6 @@ export class ScheduleComponent {
 		let scheduleId = this.route.snapshot.paramMap.get('id')!;
 		let days = this.route.snapshot.paramMap.get('days')!;
 		let hours = this.route.snapshot.paramMap.get('hours')!;
-		//alert("received days:" + days);
 		if (scheduleId){
 			this.loadSelectedDays(days);
 			this.fillHours();
@@ -79,8 +78,7 @@ export class ScheduleComponent {
 	
 	async loadSchedule(scheduleId: string){
 		let done = false;
-		this.scheduleService.schedule(scheduleId).subscribe((response : any) => {
-			//alert(JSON.stringify(response));
+		this.scheduleService.schedule(scheduleId).subscribe((response : Schedule) => {
 			this.scheduleConfig = response;
 			if (!this.scheduleConfig.safxTables){
 				this.scheduleConfig.safxTables = [];
@@ -135,11 +133,11 @@ export class ScheduleComponent {
 	
 	doCriteriaPagination(){
 		this.calcTotalPages();
-		this.criteriasOnePage = this.scheduleConfig.criterias.slice(0, this.pagination.size);
+		this.criteriasOnePage = this.scheduleConfig.criterias!.slice(0, this.pagination.size);
 	}
 	
 	calcTotalPages(){
-		let cLength = this.scheduleConfig.criterias.length;
+		let cLength = this.scheduleConfig.criterias!.length;
 		let pages = Math.trunc(cLength / this.pagination.size);
 		if (cLength%this.pagination.size != 0){
 			pages++;
@@ -151,13 +149,13 @@ export class ScheduleComponent {
 	}
 	
 	loadAvailableTables(){
-		this.scheduleService.availableSAFXTables().subscribe((response : any) => {
+		this.scheduleService.availableSAFXTables().subscribe((response : SAFXTablePage) => {
 			this.fillAvaliableTables(response.content);
 		});
 	}
 	
 	fillAvaliableTables(availableTables: any[]){
-		this.availableTables = availableTables.filter((t:any) => this.scheduleConfig.safxTables.filter((at:any) => at.id == t.id).length == 0);
+		this.availableTables = availableTables.filter((t:any) => this.scheduleConfig.safxTables!.filter((at:any) => at.id == t.id).length == 0);
 	}
 	
 	
@@ -174,18 +172,18 @@ export class ScheduleComponent {
 	onAddSelected(){
 		this.selectedAvaiableTables.forEach(t => {
 			let el = this.availableTables.filter((at:any) => at.id == t)[0];
-			this.scheduleConfig.safxTables.push(el);
+			this.scheduleConfig.safxTables!.push(el);
 			let i = this.availableTables.indexOf(el);
 			this.availableTables.splice(i, 1);
 		});
-		this.scheduleConfig.safxTables.sort((a:any,b:any) => a.id-b.id);
+		this.scheduleConfig.safxTables!.sort((a:any,b:any) => a.id-b.id);
 		this.selectedAvaiableTables = [];
 	}
 	
 	onAddAvailable(){
 		let someSafxTableUsedInCriteria = false;
 		this.selectedSelectedTables.forEach(t => {
-			this.scheduleConfig.criterias.forEach((criteria: any) => {
+			this.scheduleConfig.criterias!.forEach((criteria: any) => {
 				if (criteria.safxColumn.safxTable.id == t){
 					someSafxTableUsedInCriteria = true;
 				}
@@ -193,10 +191,10 @@ export class ScheduleComponent {
 		});
 		if (!someSafxTableUsedInCriteria){
 			this.selectedSelectedTables.forEach(t => {
-				let el = this.scheduleConfig.safxTables.filter((at:any) => at.id == t)[0];
+				let el = this.scheduleConfig.safxTables!.filter((at:any) => at.id == t)[0];
 				this.availableTables.push(el);
-				let i = this.scheduleConfig.safxTables.indexOf(el);
-				this.scheduleConfig.safxTables.splice(i, 1);
+				let i = this.scheduleConfig.safxTables!.indexOf(el);
+				this.scheduleConfig.safxTables!.splice(i, 1);
 			});
 			this.availableTables.sort((a:any,b:any) => a.id-b.id);
 			this.selectedSelectedTables = [];
@@ -220,7 +218,7 @@ export class ScheduleComponent {
 		let safxColumnName = this.safxColumns.filter((c:any) => c.id == this.criteria.safxColumn.id)[0].name;
 		this.criteria.safxColumn.name = safxColumnName;
 		//update the main list
-		this.scheduleConfig.criterias.splice(0, 0, this.criteria); 
+		this.scheduleConfig.criterias!.splice(0, 0, this.criteria); 
 		this.criteria = { 'safxColumn' : { 'safxTable' : {'id' : null } } };
 		this.valueType = 'inputText';
 		this.calcTotalPages();
@@ -228,9 +226,8 @@ export class ScheduleComponent {
 	}
 
 	onDelete(criteria: any){
-		let criteriaFound = this.scheduleConfig.criterias.indexOf(criteria);
-		//alert("criteriaFound:" + criteriaFound);
-		this.scheduleConfig.criterias.splice(criteriaFound, 1);
+		let criteriaFound = this.scheduleConfig.criterias!.indexOf(criteria);
+		this.scheduleConfig.criterias!.splice(criteriaFound, 1);
 		this.calcTotalPages();
 		if (this.pagination.page == this.totalPages){
 			this.pagination.page = this.totalPages-1;
@@ -246,17 +243,15 @@ export class ScheduleComponent {
 	}
 	
 	onPage(page: number){
-		//alert("onPage:" + page);
 		if (page >= 0 && page < this.totalPages){
 			this.pagination.page=page;
 			let start = this.pagination.page*this.pagination.size;
-			this.criteriasOnePage = this.scheduleConfig.criterias.slice(start, start + this.pagination.size);
+			this.criteriasOnePage = this.scheduleConfig.criterias!.slice(start, start + this.pagination.size);
 		}
 		
 	}
 
 	onSave(){
-		//alert("scheduleConfig:" + JSON.stringify(this.scheduleConfig.criterias));
 		if (!this.valid()){
 			return;
 		}
@@ -274,7 +269,7 @@ export class ScheduleComponent {
 			return false;
 		}
 		
-		if (this.scheduleConfig.safxTables.length == 0){
+		if (this.scheduleConfig.safxTables!.length == 0){
 			alert("Adicione tabela SAFX");
 			return false;
 		}
@@ -282,7 +277,7 @@ export class ScheduleComponent {
 	}
 	
 	findTableName(id: any){
-		return this.scheduleConfig.safxTables.filter((at:any) => at.id == id)[0].name;
+		return this.scheduleConfig.safxTables!.filter((at:any) => at.id == id)[0].name;
 	}
 
 	onGetColumns(){
@@ -292,15 +287,9 @@ export class ScheduleComponent {
 	}
 	
 	onProcess(){
-		/*this.http.get(this.baseApi + `schedules/${this.scheduleConfig.id}/process`)
-		.subscribe((response : any) => {
-			alert("Test de Execucao do Agendamento realizado com sucesso");
-		});
-		*/
 	}
 	
 	onDateNumericKeydown(e: any){
-	  //alert("e.keyCode:" + e.keyCode);
 		console.log(e);
 		return this.isNumericInputKey(e);
 	}

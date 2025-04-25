@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Paginator } from '../components/common/model';
+import { Paginator, SAFXTable, SAFXTablePage } from '../components/common/model';
 import { PaginationComponent } from '../components/pagination.component';
 import { MatcherService } from './shared/matcher.service';
 
@@ -20,7 +20,7 @@ export class MatcherListComponent {
 
 	public tableName : string = '';
 	public justAssociated: boolean = false;
-	public safTables: any[]  = [];
+	public safTables: SAFXTable[]  = [];
 	public totalPages : number = 0;
 	public pagination : Paginator = new Paginator();
 	
@@ -36,8 +36,7 @@ export class MatcherListComponent {
 		filter += '&justAssociated=' + this.justAssociated;
 		
 		this.matcherService.safxTables(filter, this.pagination)
-		.subscribe( (response : any) => {
-			//alert("ok:" + response);
+		.subscribe( (response : SAFXTablePage) => {
 			this.safTables = response.content;
 			this.totalPages = response.totalPages;
 		});
@@ -48,14 +47,13 @@ export class MatcherListComponent {
 	}
 
 	onPage(page: number){
-		//alert("onPage:" + page);
 		if (page >= 0 && page < this.totalPages){
 			this.pagination.page=page;
 			this.loadSAFXTables();
 		}
 	}
 	
-	onEdit(id: number){
+	onEdit(id: number | null){
 		this.router.navigate(['matcher', id]);
 	}
 	

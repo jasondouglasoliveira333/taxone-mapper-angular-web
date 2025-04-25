@@ -33,15 +33,15 @@ export class DSTable{
 	public name: string | null = null ;
 }
 
-export class DSColumns{
+export class DSColumn{
 	public dsTable: DSTable | null = null;
 	public name: string | null = null;
 	public columnType: string | null = null;
 	public size: number | null = null;
 }
 
-export class DSColumnsPage{
-	public content: DSColumns[] = [];
+export class DSColumnPage{
+	public content: DSColumn[] = [];
 	public totalPages: number = 0;
 }
 
@@ -56,11 +56,39 @@ export class EmailPage{
 	public totalPages: number = 0;
 }
 
+export class SAFXTable{
+	public id: number | null = null;
+	public name: string | null = null;
+	public description: string | null = null;
+	public dsTableId: number | null = null;
+	public dsTableName: string | null = null;
+}
+
+export class SAFXTablePage{
+	public content: SAFXTable[] = [];
+	public totalPages: number = 0;
+}
+
+export class SAFXColumn{
+	public id: number | null = null;
+	public name: string | null = null;
+	public required: boolean | null = null;
+	public size: number | null = null;
+	public type: string | null = null;
+	public dsColumnId: number | null = null;
+	public dsColumnName: string | null = null;
+}
+
+
 export class Schedule{
 	public id: number | null = null;
 	public name: string | null = null;
 	public userName: string | null = null;
 	public status: string | null = null;
+	public days: string | null = null;
+	public hours: string | null = null;
+	public safxTables: SAFXTable[] | null = null;
+	public criterias: any[] | null = null;
 }
 
 export class SchedulePage{

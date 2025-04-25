@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from './../../environments/environment';
 
 import { HttpClientWrapper } from '../components/httpclientwrapper';
-import { Paginator, SourceConfig, DSColumns, DSColumnsPage, DSTable } from '../components/common/model';
+import { Paginator, SourceConfig, DSColumn, DSColumnPage, DSTable } from '../components/common/model';
 import { PaginationComponent } from '../components/pagination.component';
 import { SourceConfigService } from './shared/sourceconfig.service';
 
@@ -27,7 +27,7 @@ export class SourceConfigComponent {
 	
 	public dataSourceConfig : SourceConfig = new SourceConfig();
 	public dsTables: DSTable[] = [];
-	public dsColumns: DSColumns[] = [];
+	public dsColumns: DSColumn[] = [];
 	
 	constructor(private route: ActivatedRoute, private router: Router, private sourceConfigService: SourceConfigService){
 		this.dataSourceType = this.route.snapshot.paramMap.get('sourceType')!;
@@ -62,7 +62,7 @@ export class SourceConfigComponent {
 
 	loadDSColumns(){
 		this.sourceConfigService.dsColumns(this.dataSourceType, this.dsTableId, this.pagination)
-		.subscribe( (response : DSColumnsPage) => {
+		.subscribe( (response : DSColumnPage) => {
 			this.dsColumns = response.content;
 			this.totalPages = response.totalPages;
 		});

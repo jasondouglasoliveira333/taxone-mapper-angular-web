@@ -61,12 +61,14 @@ export class AlertComponent {
 		return true;
 	}
 	
-	onDelete(id: number){
-		this.alertService.onDelete(id)
-		.subscribe(() => {
-			alert("Email excluido com sucesso");
-			this.loadEmails();
-		});
+	onDelete(id: number | null){
+		if (id){
+			this.alertService.onDelete(id)
+			.subscribe(() => {
+				alert("Email excluido com sucesso");
+				this.loadEmails();
+			});
+		}
 	}
 	
 	onAdd(){

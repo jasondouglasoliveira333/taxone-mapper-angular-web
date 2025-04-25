@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Paginator } from '../components/common/model';
+import { Paginator, SAFXTable, SAFXColumn, DSTable, DSColumnPage, DSColumn } from '../components/common/model';
 import { PaginationComponent } from '../components/pagination.component';
 import { MatcherService } from './shared/matcher.service';
 
@@ -18,13 +18,13 @@ export class MatcherComponent {
 	
 	public safxTableName: string = ''; 
 
-	public safxColumnsFull : any[]  = [];
+	public safxColumnsFull : SAFXColumn[]  = [];
 	
-	public safxColumns : any[]  = [];
+	public safxColumns : SAFXColumn[]  = [];
 
-	public dsTables : any[] = [];
+	public dsTables : DSTable[] = [];
 
-	public dsColumns : any[] = [];
+	public dsColumns : DSColumn[] = [];
 
 	public selectedTableId: number  = 0;
 	
@@ -48,9 +48,9 @@ export class MatcherComponent {
 	
 	loadSAFXTable(){
 		this.matcherService.safxTable(this.selectedTableId)
-		.subscribe( (response : any) => {
-			this.safxTableName = response.name;
-			this.selectedDsTableId = response.dsTableId;
+		.subscribe( (response : SAFXTable) => {
+			this.safxTableName = response.name!;
+			this.selectedDsTableId = response.dsTableId!;
 			this.selectedTable = this.selectedDsTableId;
 			this.loadDSColumns();
 		});
@@ -58,7 +58,7 @@ export class MatcherComponent {
 	
 	loadSAFXColumns(){
 		this.matcherService.safxColumns(this.selectedTableId).
-		subscribe( (response : any) => {
+		subscribe( (response : SAFXColumn[]) => {
 			this.safxColumnsFull = response;
 			let pages = Math.trunc(response.length / this.safxPagination.size);
 			if (response.length%this.safxPagination.size != 0){
@@ -74,10 +74,10 @@ export class MatcherComponent {
 	
 	loadDSTables(){
 		this.matcherService.dsTables().
-		subscribe( (response : any) => {
+		subscribe( (response : DSTable[]) => {
 			this.dsTables = response;
 			if (this.selectedDsTableId == null){
-				this.selectedDsTableId = this.dsTables[0].id;
+				this.selectedDsTableId = this.dsTables[0].id!;
 				this.loadDSColumns();
 			}
 		});
@@ -86,7 +86,7 @@ export class MatcherComponent {
 	loadDSColumns(){
 		if (this.selectedDsTableId){
 			this.matcherService.dsColumns(this.selectedDsTableId, this.dsPagination).
-			subscribe( (response : any) => {
+			subscribe( (response : DSColumnPage) => {
 				this.dsColumns = response.content;
 				this.dsTotalPages = response.totalPages;
 			});
@@ -94,7 +94,6 @@ export class MatcherComponent {
 	}
 
 	onPageSAFX(page: number){
-		//alert("onPage:" + page);
 		if (page >= 0 && page < this.safxTotalPages){
 			this.safxPagination.page=page;
 			let start = this.safxPagination.page*this.safxPagination.size;
@@ -103,7 +102,6 @@ export class MatcherComponent {
 	}
 
 	onPageDS(page: number){
-		//alert("onPage:" + page);
 		if (page >= 0 && page < this.dsTotalPages){
 			this.dsPagination.page=page;
 			this.loadDSColumns();
@@ -127,7 +125,7 @@ export class MatcherComponent {
 		});
 		
 		this.matcherService.saveSAFXTAble(this.selectedTableId, this.safxColumnsFull)
-		.subscribe( (response : any) => {
+		.subscribe( () => {
 			alert("Mapeamento salvo com sucesso!");
 		},error => {
 			alert("Erro salvando SAFX");
