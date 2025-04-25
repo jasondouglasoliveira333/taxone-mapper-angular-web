@@ -14,11 +14,11 @@ export class UploadService{
 	constructor(private http: HttpClientWrapper){}
 
 	uploads(pagination: Paginator){
-		return this.http.getaa<UploadPage>(this.baseApi + `uploads?page=${pagination.page}&size=${pagination.size}`);
+		return this.http.get<UploadPage>(this.baseApi + `uploads?page=${pagination.page}&size=${pagination.size}`);
 	}
 	
 	upload(formData: FormData){
-		return this.http.postaa<FormData>(this.baseApi + "uploads", formData);
+		return this.http.post<FormData>(this.baseApi + "uploads", formData);
 	}
 }
 

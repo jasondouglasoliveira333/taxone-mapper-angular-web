@@ -14,23 +14,23 @@ export class MatcherService{
 	constructor(private http: HttpClientWrapper){}
 	
 	safxTables(filter: string, pagination: Paginator){
-		return this.http.getaa<SAFXTablePage>(this.baseApi + `safxTables?page=${pagination.page}&size=${pagination.size}` + filter);
+		return this.http.get<SAFXTablePage>(this.baseApi + `safxTables?page=${pagination.page}&size=${pagination.size}` + filter);
 	}
 
 	safxTable(selectedTableId: number){
-		return this.http.getaa<SAFXTable>(this.baseApi + `safxTables/${selectedTableId}`);
+		return this.http.get<SAFXTable>(this.baseApi + `safxTables/${selectedTableId}`);
 	}
 
 	safxColumns(selectedTableId: number){
-		return this.http.getaa<SAFXColumn[]>(this.baseApi + `safxTables/${selectedTableId}/safxColumns`);
+		return this.http.get<SAFXColumn[]>(this.baseApi + `safxTables/${selectedTableId}/safxColumns`);
 	}
 
 	dsTables(){
-		return this.http.getaa<DSTable[]>(this.baseApi + 'dsTables');
+		return this.http.get<DSTable[]>(this.baseApi + 'dsTables');
 	}
 	
 	dsColumns(selectedDsTableId: number, dsPagination: Paginator){
-		return this.http.getaa<DSColumnPage>(this.baseApi + `dsTables/${selectedDsTableId}/dsColumns?
+		return this.http.get<DSColumnPage>(this.baseApi + `dsTables/${selectedDsTableId}/dsColumns?
 				page=${dsPagination.page}&size=${dsPagination.size}`);
 	}
 
@@ -39,7 +39,7 @@ export class MatcherService{
 	}
 
 	saveSAFXTAble(selectedTableId: number, safxColumnsFull : SAFXColumn[]) {
-		return this.http.putaa<SAFXColumn[]>(this.baseApi + `safxTables/${selectedTableId}/safxColumns`, safxColumnsFull);
+		return this.http.put<SAFXColumn[]>(this.baseApi + `safxTables/${selectedTableId}/safxColumns`, safxColumnsFull);
 	}
 
 }

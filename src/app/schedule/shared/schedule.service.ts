@@ -15,7 +15,7 @@ export class ScheduleService{
 	constructor(private http: HttpClientWrapper){}
 
 	schedules(pagination: Paginator){
-		return this.http.getaa<SchedulePage>(this.baseApi + `schedules?page=${pagination.page}&size=${pagination.size}`);
+		return this.http.get<SchedulePage>(this.baseApi + `schedules?page=${pagination.page}&size=${pagination.size}`);
 	}
 
 	periods(id: string){
@@ -27,18 +27,18 @@ export class ScheduleService{
 	}
 
 	schedule(scheduleId: string){
-		return this.http.getaa<Schedule>(this.baseApi + `schedules/${scheduleId}`);
+		return this.http.get<Schedule>(this.baseApi + `schedules/${scheduleId}`);
 	}
 
 	availableSAFXTables(){
-		return this.http.getaa<SAFXTablePage>(this.baseApi + `safxTables?page=0&size=1000`);
+		return this.http.get<SAFXTablePage>(this.baseApi + `safxTables?page=0&size=1000`);
 	}
 	
 	save(scheduleConfig: Schedule){
-		return this.http.postaa<Schedule>(this.baseApi + 'schedules', scheduleConfig);
+		return this.http.post<Schedule>(this.baseApi + 'schedules', scheduleConfig);
 	}
 	
 	safxColumns(safxTableId: number){
-		return this.http.getaa<SAFXColumn[]>(this.baseApi + `safxTables/${safxTableId}/safxColumns?associated=true`);
+		return this.http.get<SAFXColumn[]>(this.baseApi + `safxTables/${safxTableId}/safxColumns?associated=true`);
 	}
 }

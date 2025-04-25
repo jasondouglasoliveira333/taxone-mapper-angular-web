@@ -13,7 +13,7 @@ export class AlertService{
 	constructor(private http: HttpClientWrapper){}
 	
 	loadEmails(){
-		return this.http.getaa<EmailPage>(this.baseApi + 'emails?page=0&size=1000');
+		return this.http.get<EmailPage>(this.baseApi + 'emails?page=0&size=1000');
 	}
 
 	onDelete(id: number){
@@ -21,7 +21,7 @@ export class AlertService{
 	}
 
 	onSave(emails: Email[]){
-		return this.http.postaa<Email[]>(this.baseApi +  'emails', emails);
+		return this.http.post<Email[]>(this.baseApi +  'emails', emails);
 	}
 
 }
