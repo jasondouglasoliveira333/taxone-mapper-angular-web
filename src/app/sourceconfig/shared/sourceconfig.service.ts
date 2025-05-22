@@ -31,7 +31,7 @@ export class SourceConfigService{
 	}
 	
 	metadata(dataSourceType: string, dataSourceConfig: SourceConfig){
-		return this.http.post<SourceConfig>(this.baseApi + `dataSourceConfigs/${dataSourceType}/metadata`, dataSourceConfig)
+		return this.http.post<SourceConfig>(this.baseApi + `dataSourceConfigs/${dataSourceType}/metadata`, dataSourceConfig);
 	}
 	
 	save(dataSourceType: string, dataSourceConfig: SourceConfig){

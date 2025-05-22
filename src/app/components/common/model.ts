@@ -95,5 +95,3 @@ export class SchedulePage{
 	public content: Schedule[] = [];
 	public totalPages: number = 0;
 }
-
-

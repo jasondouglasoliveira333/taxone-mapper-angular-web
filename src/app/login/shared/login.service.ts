@@ -6,7 +6,7 @@ import { environment } from './../../../environments/environment';
 
 
 @Injectable()
-export class MatcherService{
+export class LoginService{
 	private baseApi = environment.baseApi;
 	
 	constructor(private http: HttpClient){}

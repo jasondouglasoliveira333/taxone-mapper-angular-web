@@ -53,7 +53,7 @@ export class SourceConfigComponent {
 		this.sourceConfigService.dsTables(this.dataSourceType)
 		.subscribe( (response : DSTable[]) => {
 			this.dsTables = response;
-			if (this.dsTables.length > 0 && this.dsTables[0].id != null){//this.dsTables[0].id != null because model
+			if (this.dsTables.length > 0 && this.dsTables[0].id != null){
 				this.dsTableId = this.dsTables[0].id;
 				this.loadDSColumns();
 			}

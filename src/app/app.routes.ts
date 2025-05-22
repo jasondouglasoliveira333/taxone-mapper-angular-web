@@ -1,6 +1,6 @@
 import { Routes, ResolveFn, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateFn } from '@angular/router';
 
-//import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './login/login.component';
 import { UploadComponent } from "./upload/upload.component";
 import { SourceConfigListComponent } from './sourceconfig/sourceconfig.list.component';
 import { SourceConfigComponent } from './sourceconfig/sourceconfig.component';
@@ -35,6 +35,7 @@ export const routes: Routes = [
 	{path : "monitoring-datail/:id", component: MonitoringDetailComponent},
 	{path : "revenue", component: RevenueComponent},
 	{path : "alert", component: AlertComponent},
+	{path : "login", component: LoginComponent},
 	{path : "**", component: NotFoundComponent}
 ];
 

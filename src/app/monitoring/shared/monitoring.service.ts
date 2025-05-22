@@ -14,7 +14,7 @@ export class MonitoringService{
 	constructor(private http: HttpClientWrapper){}
 
 	scheduleLogsStatisticts(){
-		return this.http.get(this.baseApi + 'schedulelogs/statistics');
+		return this.http.get(this.baseApi + 'schedulelogsx/statistics');
 	}
 	
 	scheduleLogs(status: string, pagination: Paginator){

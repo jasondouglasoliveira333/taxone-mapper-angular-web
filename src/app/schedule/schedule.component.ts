@@ -71,6 +71,8 @@ export class ScheduleComponent {
 			this.loadSelectedHours(hours);
 			this.loadSchedule(scheduleId);
 		}else{
+			this.scheduleConfig.safxTables = [];
+			this.scheduleConfig.criterias = [];
 			this.fillHours();
 		}
 		this.loadAvailableTables();
